@@ -11,6 +11,7 @@
 		$emailfooter = mysql_escape_string($_POST['emailfooter']);
 		$address = mysql_escape_string($_POST['address']);
 		$bookingprefix = $_POST['bookingprefix'];
+		$refereereportemail = $_POST['refereereportemail'];
 		$invoiceprefix = $_POST['invoiceprefix'];
 		$vatrate = $_POST['vatrate'];
 		
@@ -19,6 +20,7 @@
 				"vatrate = $vatrate, " .
 				"address = '$address', " .
 				"bookingprefix = '$bookingprefix', " .
+				"refereereportemail = '$refereereportemail', " .
 				"invoiceprefix = '$invoiceprefix', " .
 				"runscheduledays = '$runscheduledays', " .
 				"emailfooter = '$emailfooter', metamodifieddate = NOW(), metamodifieduserid = " . getLoggedOnMemberID() . "";
@@ -56,11 +58,11 @@
 	<label>Address</label>
 	<textarea id="address" name="address" rows="5" cols="60"></textarea>
 
-	<label>Order Prefix</label>
-	<input type="text" id="bookingprefix" name="bookingprefix" value="<?php echo $member['bookingprefix']; ?>" />
+	<label>Referee Report Email Address</label>
+	<input type="text" id="refereereportemail" class="textbox90" name="refereereportemail" value="<?php echo $member['refereereportemail']; ?>" />
 
-	<label>Invoice Prefix</label>
-	<input type="text" id="invoiceprefix" name="invoiceprefix" value="<?php echo $member['invoiceprefix']; ?>" />
+	<input type="hidden" id="bookingprefix" name="bookingprefix" value="<?php echo $member['bookingprefix']; ?>" />
+	<input type="hidden" id="invoiceprefix" name="invoiceprefix" value="<?php echo $member['invoiceprefix']; ?>" />
 	
 	<br>
 	<br>

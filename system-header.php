@@ -99,7 +99,7 @@
 											echo $_SESSION['SESS_FIRST_NAME'] . " " . $_SESSION['SESS_LAST_NAME']; 
 											
 											if (isUserInRole("TEAM")) {
-												echo "&nbsp;&nbsp;( " . $_SESSION['SESS_TEAM_NAME'] . ") "; 
+												echo "&nbsp;&nbsp;( " . $_SESSION['SESS_TEAM_NAME'] . " )"; 
 											}
 										?>
 									</a>

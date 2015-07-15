@@ -13,60 +13,14 @@
 		
 		public function postScriptEvent() {
 ?>
+			function age_onchange() {
+				$("#editform #name").val("Under " + $(this).val());
+			}
+			
 			function editDocuments(node) {
-				viewDocument(node, "addcustomerdocument.php", node, "customerdocs", "customerid");
+				viewDocument(node, "addleveldocument.php", node, "teamagegroupdocs", "agegroupid");
 			}
 	
-			/* Derived  address callback. */
-			function fullInvoiceAddress(node) {
-				var address = "";
-				
-				if ((node.address1) != "") {
-					address = address + node.address1;
-				} 
-				
-				if ((node.address2) != "") {
-					if (address != "") {
-						address = address + ", ";
-					}
-					
-					address = address + node.address2;
-				} 
-				
-				if ((node.address3) != "") {
-					if (address != "") {
-						address = address + ", ";
-					}
-					
-					address = address + node.address3;
-				} 
-				
-				if ((node.city) != "") {
-					if (address != "") {
-						address = address + ", ";
-					}
-					
-					address = address + node.city;
-				} 
-				
-				if ((node.postcode) != "") {
-					if (address != "") {
-						address = address + ", ";
-					}
-					
-					address = address + node.postcode;
-				} 
-				
-				if ((node.country) != "") {
-					if (address != "") {
-						address = address + ", ";
-					}
-					
-					address = address + node.country;
-				} 
-				
-				return address;
-			}
 <?php			
 		}
 	}
@@ -80,12 +34,14 @@
 	
 	$crud = new TeamCrud();
 	$crud->dialogwidth = 650;
-	$crud->title = "Age Groups";
+	$crud->title = "Teams";
 	$crud->table = "{$_SESSION['DB_PREFIX']}teamagegroup";
-	$crud->sql = "SELECT A.*
+	$crud->sql = "SELECT A.*, C.name AS clubname
 				  FROM  {$_SESSION['DB_PREFIX']}teamagegroup A
+				  INNER JOIN {$_SESSION['DB_PREFIX']}team C
+				  ON C.id = A.teamid
 				  WHERE A.teamid = $teamid
-				  ORDER BY A.name";
+				  ORDER BY A.age";
 	$crud->columns = array(
 			array(
 				'name'       => 'id',
@@ -99,9 +55,75 @@
 				'label' 	 => 'ID'
 			),
 			array(
+				'name'       => 'clubname',
+				'length' 	 => 18,
+				'editable'	 => false,
+				'bind'		 => false,
+				'label' 	 => 'Club'
+			),			
+			array(
 				'name'       => 'name',
-				'length' 	 => 30,
-				'label' 	 => 'Age Group'
+				'length' 	 => 18,
+				'hidden'	 => true,
+				'label' 	 => 'Team'
+			),			
+			array(
+				'name'       => 'age',
+				'type'		 => 'COMBO',
+				'onchange'	 => 'age_onchange',
+				'showInView' => false,
+				'options'    => array(
+						array(
+							'value'		=> '7',
+							'text'		=> 'Under 7'
+						),
+						array(
+							'value'		=> '8',
+							'text'		=> 'Under 8'
+						),
+						array(
+							'value'		=> '9',
+							'text'		=> 'Under 9'
+						),
+						array(
+							'value'		=> '10',
+							'text'		=> 'Under 10'
+						),
+						array(
+							'value'		=> '11',
+							'text'		=> 'Under 11'
+						),
+						array(
+							'value'		=> '12',
+							'text'		=> 'Under 12'
+						),
+						array(
+							'value'		=> '13',
+							'text'		=> 'Under 13'
+						),
+						array(
+							'value'		=> '14',
+							'text'		=> 'Under 14'
+						),
+						array(
+							'value'		=> '15',
+							'text'		=> 'Under 15'
+						),
+						array(
+							'value'		=> '16',
+							'text'		=> 'Under 16'
+						),
+						array(
+							'value'		=> '17',
+							'text'		=> 'Under 17'
+						),
+						array(
+							'value'		=> '18',
+							'text'		=> 'Under 18'
+						)
+					),
+				'length' 	 => 15,
+				'label' 	 => 'Team'
 			),
 			array(
 				'name'       => 'teamid',
@@ -131,53 +153,6 @@
 				'length' 	 => 15,
 				'label' 	 => 'Last Name'
 			),			
-			array(
-				'name'       => 'address1',
-				'length' 	 => 60,
-				'showInView' => false,
-				'label' 	 => 'Address 1'
-			),
-			array(
-				'name'       => 'address2',
-				'length' 	 => 60,
-				'showInView' => false,
-				'required'	 => false,
-				'label' 	 => 'Address 2'
-			),
-			array(
-				'name'       => 'address3',
-				'length' 	 => 60,
-				'showInView' => false,
-				'required'	 => false,
-				'label' 	 => 'Address 3'
-			),
-			array(
-				'name'       => 'city',
-				'length' 	 => 30,
-				'showInView' => false,
-				'label' 	 => 'City'
-			),
-			array(
-				'name'       => 'postcode',
-				'length' 	 => 10,
-				'showInView' => false,
-				'label' 	 => 'Post Code'
-			),
-			array(
-				'name'       => 'country',
-				'length' 	 => 30,
-				'showInView' => false,
-				'label' 	 => 'Country'
-			),
-			array(
-				'name'       => 'address',
-				'length' 	 => 90,
-				'editable'   => false,
-				'bind'		 => false,
-				'type'		 => 'DERIVED',
-				'function'	 => 'fullInvoiceAddress',
-				'label' 	 => 'Address'
-			),
 			array(
 				'name'       => 'email',
 				'length' 	 => 40,

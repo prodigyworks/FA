@@ -11,58 +11,7 @@
 		public function postScriptEvent() {
 ?>
 			function editDocuments(node) {
-				viewDocument(node, "addcustomerdocument.php", node, "customerdocs", "customerid");
-			}
-	
-			/* Derived  address callback. */
-			function fullInvoiceAddress(node) {
-				var address = "";
-				
-				if ((node.address1) != "") {
-					address = address + node.address1;
-				} 
-				
-				if ((node.address2) != "") {
-					if (address != "") {
-						address = address + ", ";
-					}
-					
-					address = address + node.address2;
-				} 
-				
-				if ((node.address3) != "") {
-					if (address != "") {
-						address = address + ", ";
-					}
-					
-					address = address + node.address3;
-				} 
-				
-				if ((node.city) != "") {
-					if (address != "") {
-						address = address + ", ";
-					}
-					
-					address = address + node.city;
-				} 
-				
-				if ((node.postcode) != "") {
-					if (address != "") {
-						address = address + ", ";
-					}
-					
-					address = address + node.postcode;
-				} 
-				
-				if ((node.country) != "") {
-					if (address != "") {
-						address = address + ", ";
-					}
-					
-					address = address + node.country;
-				} 
-				
-				return address;
+				viewDocument(node, "addteamdocument.php", node, "teamdocs", "teamid");
 			}
 <?php			
 		}
@@ -70,7 +19,10 @@
 	
 	$crud = new TeamCrud();
 	$crud->dialogwidth = 650;
-	$crud->title = "Customers";
+	$crud->title = "Clubs";
+	$crud->allowEdit = isUserInRole("ADMIN");
+	$crud->allowRemove = isUserInRole("ADMIN");
+	$crud->allowAdd = isUserInRole("ADMIN");
 	$crud->table = "{$_SESSION['DB_PREFIX']}team";
 	$crud->sql = "SELECT A.*
 				  FROM  {$_SESSION['DB_PREFIX']}team A
@@ -111,53 +63,6 @@
 				'label' 	 => 'Last Name'
 			),			
 			array(
-				'name'       => 'address1',
-				'length' 	 => 60,
-				'showInView' => false,
-				'label' 	 => 'Address 1'
-			),
-			array(
-				'name'       => 'address2',
-				'length' 	 => 60,
-				'showInView' => false,
-				'required'	 => false,
-				'label' 	 => 'Address 2'
-			),
-			array(
-				'name'       => 'address3',
-				'length' 	 => 60,
-				'showInView' => false,
-				'required'	 => false,
-				'label' 	 => 'Address 3'
-			),
-			array(
-				'name'       => 'city',
-				'length' 	 => 30,
-				'showInView' => false,
-				'label' 	 => 'City'
-			),
-			array(
-				'name'       => 'postcode',
-				'length' 	 => 10,
-				'showInView' => false,
-				'label' 	 => 'Post Code'
-			),
-			array(
-				'name'       => 'country',
-				'length' 	 => 30,
-				'showInView' => false,
-				'label' 	 => 'Country'
-			),
-			array(
-				'name'       => 'address',
-				'length' 	 => 90,
-				'editable'   => false,
-				'bind'		 => false,
-				'type'		 => 'DERIVED',
-				'function'	 => 'fullInvoiceAddress',
-				'label' 	 => 'Address'
-			),
-			array(
 				'name'       => 'email',
 				'length' 	 => 40,
 				'label' 	 => 'Email'
@@ -182,7 +87,7 @@
 				'script' 	  => 'editDocuments'
 			),
 			array(
-				'title'		  => 'Age Groups',
+				'title'		  => 'Teams',
 				'imageurl'	  => 'images/team.png',
 				'application' => 'levels.php'
 			)

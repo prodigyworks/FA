@@ -11,4 +11,6 @@
 	
 	$qry = "DELETE FROM $table WHERE $pkname = $id";
 	$result = mysql_query($qry);
+	
+	mysql_query("COMMIT");
 	?>

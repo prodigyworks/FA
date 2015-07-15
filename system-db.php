@@ -7,6 +7,7 @@ class SiteConfigClass {
 	public $vatrate;
 	public $runscheduledays;
 	public $address;
+	public $refereereportemail;
 	public $bookingprefix;
 	public $invoiceprefix;
 }
@@ -65,6 +66,7 @@ function start_db() {
 					$data->emailfooter = $member['emailfooter'];
 					$data->lastschedulerun = $member['lastschedulerun'];
 					$data->runscheduledays = $member['runscheduledays'];
+					$data->refereereportemail = $member['refereereportemail'];
 					$data->address = $member['address'];
 					$data->bookingprefix = $member['bookingprefix'];
 					$data->invoiceprefix = $member['invoiceprefix'];
@@ -99,6 +101,22 @@ function GetUserName($userid = "") {
 		
 		return $name;
 	}
+}
+
+function GetRefereeName($id) {
+	$qry = "SELECT A.name FROM {$_SESSION['DB_PREFIX']}referee A " .
+			"WHERE A.id = $id ";
+	$result = mysql_query($qry);
+	$name = "Unknown";
+
+	//Check whether the query was successful or not
+	if($result) {
+		while (($member = mysql_fetch_assoc($result))) {
+			$name = $member['name'];
+		}
+	}
+		
+	return $name;
 }
 
 function GetEmail($userid) {
@@ -242,7 +260,7 @@ function smtpmailer($to, $from, $from_name, $subject, $body, $attachments = arra
 		
 		$mail = new PHPMailer();  // create a new object
 		$mail->AddReplyTo($from, $from_name);
-		$mail->SetFrom("office@jrm.com", $from_name);
+		$mail->SetFrom("info@thefa.com", $from_name);
 		$mail->IsHTML(true);
 		$mail->Subject = $subject;
 		$mail->Body = $body;
@@ -298,7 +316,7 @@ function sendRoleMessage($role, $subject, $message, $attachments = array()) {
 	//Check whether the query was successful or not
 	if($result) {
 		while (($member = mysql_fetch_assoc($result))) {
-			smtpmailer($member['email'], 'office@jrm.com', 'JRM Facility Services', $subject, getEmailHeader() . "<h4>Dear " . $member['firstname'] . ",</h4><p>" . $message . "</p>" . getEmailFooter(), $attachments);
+			smtpmailer($member['email'], 'info@thefa.com', 'The FA', $subject, getEmailHeader() . "<h4>Dear " . $member['firstname'] . ",</h4><p>" . $message . "</p>" . getEmailFooter(), $attachments);
 			
 			$subject = mysql_escape_string($subject);
 			$message = mysql_escape_string($message);
@@ -352,8 +370,8 @@ function sendSiteMessage($siteid, $subject, $message, $attachments = array()) {
 
 
 function sendInternalRoleMessage($role, $subject, $message, $attachments = array()) {
-	$from = "office@jrm.com";
-	$fromName = "JRM Facility Services";
+	$from = "info@thefa.com";
+	$fromName = "The FA";
 	$qry = "SELECT B.email, B.firstname, B.lastname FROM {$_SESSION['DB_PREFIX']}members B " .
 			"WHERE B.member_id = " . getLoggedOnMemberID();
 	$result = mysql_query($qry);
@@ -390,22 +408,17 @@ function sendInternalRoleMessage($role, $subject, $message, $attachments = array
 	if (!empty($error)) echo $error;
 }
 
-function sendTeamMessage($id, $subject, $message, $footer = "") {
-	$qry = "SELECT C.member_id, C.email, C.firstname " .
-			"FROM {$_SESSION['DB_PREFIX']}members A " .
-			"INNER JOIN {$_SESSION['DB_PREFIX']}members C " .
-			"ON C.teamid = A.teamid " .
-			"INNER JOIN {$_SESSION['DB_PREFIX']}userroles D " .
-			"ON D.memberid = C.member_id " .
-			"AND D.roleid = 'TEAMLEADER' " .
-			"WHERE A.member_id = $id ";
+function sendTeamMessage($id, $subject, $message, $footer = "", $attachments = array()) {
+	$qry = "SELECT A.email, A.firstname " .
+			"FROM {$_SESSION['DB_PREFIX']}team A " .
+			"WHERE A.id = $id ";
 	$result = mysql_query($qry);
 	
 
 	//Check whether the query was successful or not
 	if($result) {
 		while (($member = mysql_fetch_assoc($result))) {
-			smtpmailer($member['email'], 'office@jrm.com', 'JRM Facility Services', $subject, getEmailHeader() . "<h4>Dear " . $member['firstname'] . ",</h4><p>" . $message . "</p>" . getEmailFooter(). $footer);
+			smtpmailer($member['email'], 'confirmation@thefa.com', 'The FA', $subject, getEmailHeader() . "<h4>Dear " . $member['firstname'] . ",</h4><p>" . $message . "</p>" . getEmailFooter(). $footer, $attachments);
 			
 			$subject = mysql_escape_string($subject);
 			$message = mysql_escape_string($message);
@@ -438,7 +451,7 @@ function sendUserMessage($id, $subject, $message, $footer = "", $attachments = a
 	//Check whether the query was successful or not
 	if($result) {
 		while (($member = mysql_fetch_assoc($result))) {
-			smtpmailer($member['email'], 'office@jrm.com', 'JRM Facility Services', $subject, getEmailHeader() . "<h4>Dear " . $member['firstname'] . ",</h4><p>" . $message . "</p>" . getEmailFooter(). $footer, $attachments);
+			smtpmailer($member['email'], 'info@thefa.com', 'The FA', $subject, getEmailHeader() . "<h4>Dear " . $member['firstname'] . ",</h4><p>" . $message . "</p>" . getEmailFooter(). $footer, $attachments);
 				
 			$subject = mysql_escape_string($subject);
 			$message = mysql_escape_string($message);
@@ -469,8 +482,8 @@ function addAuditLog($table, $type, $id) {
 }
 
 function sendInternalUserMessage($id, $subject, $message, $footer = "", $attachments = array(), $action = "") {
-	$from = "office@jrm.com";
-	$fromName = "JRM Facility Services";
+	$from = "info@thefa.com";
+	$fromName = "The FA";
 	$qry = "SELECT B.email, B.firstname, B.lastname FROM {$_SESSION['DB_PREFIX']}members B " .
 			"WHERE B.member_id = " . getLoggedOnMemberID();
 	$result = mysql_query($qry);
@@ -709,7 +722,7 @@ function redirectWithoutRole($role, $location) {
 }
 
 function getEmailHeader() {
-	return "<img src='" . getSiteConfigData()->domainurl . "/images/SmallLogo.png' />";
+	return "<img src='" . getSiteConfigData()->domainurl . "/images/logomain2.png' />";
 }
 
 function getEmailFooter() {
@@ -924,7 +937,7 @@ function login($login, $password, $redirect = true) {
 	}
 	
 	//Create query
-	$qry = "SELECT DISTINCT A.*, B.imageid AS teamlogoid, B.name " .
+	$qry = "SELECT DISTINCT A.*, B.imageid AS teamlogoid, B.name, B.email AS teamemail " .
 		   "FROM {$_SESSION['DB_PREFIX']}members A " .
 		   "LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}team B " .
 		   "ON B.id = A.teamid " .
@@ -945,6 +958,7 @@ function login($login, $password, $redirect = true) {
 			$_SESSION['SESS_LAST_NAME'] = $member['lastname'];
 			$_SESSION['SESS_TEAM_ID'] = $member['teamid'];
 			$_SESSION['SESS_TEAM_NAME'] = $member['name'];
+			$_SESSION['SESS_TEAM_EMAIL'] = $member['teamemail'];
 			$_SESSION['SESS_TEAM_IMAGE_ID'] = $member['teamlogoid'];
 			
 			$qry = "SELECT * FROM {$_SESSION['DB_PREFIX']}userroles WHERE memberid = " . $_SESSION['SESS_MEMBER_ID'] . "";

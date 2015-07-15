@@ -195,13 +195,13 @@
 			),
 			array(
 				'name'       => 'login',
-				'length' 	 => 30,
+				'length' 	 => 15,
 				'label' 	 => 'Login ID'
 			),
 			array(
 				'name'       => 'staffname',
 				'type'		 => 'DERIVED',
-				'length' 	 => 60,
+				'length' 	 => 23,
 				'bind'		 => false,
 				'function'   => 'fullName',
 				'sortcolumn' => 'A.firstname',
@@ -209,20 +209,20 @@
 			),
 			array(
 				'name'       => 'firstname',
-				'length' 	 => 30,
+				'length' 	 => 15,
 				'showInView' => false,
 				'label' 	 => 'First Name'
 			),
 			array(
 				'name'       => 'lastname',
-				'length' 	 => 30,
+				'length' 	 => 15,
 				'showInView' => false,
 				'label' 	 => 'Last Name'
 			),
 			array(
 				'name'       => 'teamid',
 				'type'       => 'DATACOMBO',
-				'length' 	 => 60,
+				'length' 	 => 20,
 				'label' 	 => 'Team',
 				'table'		 => 'team',
 				'required'	 => true,
@@ -232,7 +232,7 @@
 			),
 			array(
 				'name'       => 'email',
-				'length' 	 => 60,
+				'length' 	 => 30,
 				'label' 	 => 'Email'
 			),
 			array(
@@ -241,18 +241,13 @@
 				'label' 	 => 'Land line'
 			),
 			array(
-				'name'       => 'fax',
-				'length' 	 => 13,
-				'label' 	 => 'Fax'
-			),
-			array(
 				'name'       => 'mobile',
 				'length' 	 => 13,
-				'label' 	 => 'Cell phone'
+				'label' 	 => 'Mobile'
 			),
 			array(
 				'name'       => 'status',
-				'length' 	 => 30,
+				'length' 	 => 6,
 				'label' 	 => 'Status',
 				'type'       => 'COMBO',
 				'options'    => array(
@@ -276,7 +271,7 @@
 			),
 			array(
 				'name'       => 'title',
-				'length'	 => 20,
+				'length'	 => 10,
 				'label' 	 => 'Title'
 			),
 			array(

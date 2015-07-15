@@ -12,7 +12,7 @@
 
 #orderapp {
 	background-image: url(../images/footballpitch.png);
-	height:600px;
+	height:700px;
 }
 
 #orderapp form {
@@ -34,7 +34,7 @@
 }
 
 #orderform hr {
-	margin: 10px;
+	margin: 5px;
 }
 
 #orderform input[type='checkbox'] {
@@ -46,8 +46,8 @@
 	margin-bottom: 3px;
 }
 
-#orderform #submitbutton {
-	padding:15px;
+#orderform .submitbutton {
+	padding:5px;
 	font-size:14px;
 	margin-top: 14px;
 }
