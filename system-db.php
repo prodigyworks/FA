@@ -260,7 +260,7 @@ function smtpmailer($to, $from, $from_name, $subject, $body, $attachments = arra
 		
 		$mail = new PHPMailer();  // create a new object
 		$mail->AddReplyTo($from, $from_name);
-		$mail->SetFrom("info@thefa.com", $from_name);
+		$mail->SetFrom("info@hysl.com", $from_name);
 		$mail->IsHTML(true);
 		$mail->Subject = $subject;
 		$mail->Body = $body;
@@ -316,7 +316,7 @@ function sendRoleMessage($role, $subject, $message, $attachments = array()) {
 	//Check whether the query was successful or not
 	if($result) {
 		while (($member = mysql_fetch_assoc($result))) {
-			smtpmailer($member['email'], 'info@thefa.com', 'The FA', $subject, getEmailHeader() . "<h4>Dear " . $member['firstname'] . ",</h4><p>" . $message . "</p>" . getEmailFooter(), $attachments);
+			smtpmailer($member['email'], 'info@hysl.com', 'Harrow Youth Football League', $subject, getEmailHeader() . "<h4>Dear " . $member['firstname'] . ",</h4><p>" . $message . "</p>" . getEmailFooter(), $attachments);
 			
 			$subject = mysql_escape_string($subject);
 			$message = mysql_escape_string($message);
@@ -370,8 +370,8 @@ function sendSiteMessage($siteid, $subject, $message, $attachments = array()) {
 
 
 function sendInternalRoleMessage($role, $subject, $message, $attachments = array()) {
-	$from = "info@thefa.com";
-	$fromName = "The FA";
+	$from = "info@hysl.com";
+	$fromName = "Harrow Youth Football League";
 	$qry = "SELECT B.email, B.firstname, B.lastname FROM {$_SESSION['DB_PREFIX']}members B " .
 			"WHERE B.member_id = " . getLoggedOnMemberID();
 	$result = mysql_query($qry);
@@ -418,7 +418,7 @@ function sendTeamMessage($id, $subject, $message, $footer = "", $attachments = a
 	//Check whether the query was successful or not
 	if($result) {
 		while (($member = mysql_fetch_assoc($result))) {
-			smtpmailer($member['email'], 'confirmation@thefa.com', 'The FA', $subject, getEmailHeader() . "<h4>Dear " . $member['firstname'] . ",</h4><p>" . $message . "</p>" . getEmailFooter(). $footer, $attachments);
+			smtpmailer($member['email'], 'confirmation@hysl.com', 'Harrow Youth Football League', $subject, getEmailHeader() . "<h4>Dear " . $member['firstname'] . ",</h4><p>" . $message . "</p>" . getEmailFooter(). $footer, $attachments);
 			
 			$subject = mysql_escape_string($subject);
 			$message = mysql_escape_string($message);
@@ -451,7 +451,7 @@ function sendUserMessage($id, $subject, $message, $footer = "", $attachments = a
 	//Check whether the query was successful or not
 	if($result) {
 		while (($member = mysql_fetch_assoc($result))) {
-			smtpmailer($member['email'], 'info@thefa.com', 'The FA', $subject, getEmailHeader() . "<h4>Dear " . $member['firstname'] . ",</h4><p>" . $message . "</p>" . getEmailFooter(). $footer, $attachments);
+			smtpmailer($member['email'], 'info@hysl.com', 'Harrow Youth Football League', $subject, getEmailHeader() . "<h4>Dear " . $member['firstname'] . ",</h4><p>" . $message . "</p>" . getEmailFooter(). $footer, $attachments);
 				
 			$subject = mysql_escape_string($subject);
 			$message = mysql_escape_string($message);
@@ -482,8 +482,8 @@ function addAuditLog($table, $type, $id) {
 }
 
 function sendInternalUserMessage($id, $subject, $message, $footer = "", $attachments = array(), $action = "") {
-	$from = "info@thefa.com";
-	$fromName = "The FA";
+	$from = "info@hysl.com";
+	$fromName = "Harrow Youth Football League";
 	$qry = "SELECT B.email, B.firstname, B.lastname FROM {$_SESSION['DB_PREFIX']}members B " .
 			"WHERE B.member_id = " . getLoggedOnMemberID();
 	$result = mysql_query($qry);

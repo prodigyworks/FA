@@ -132,7 +132,7 @@
 			),
 			array(
 				'name'       => 'leaguecup',
-				'length' 	 => 12,
+				'length' 	 => 15,
 				'label' 	 => 'League / Cup',
 				'type'       => 'COMBO',
 				'options'    => array(
@@ -145,7 +145,7 @@
 							'text'		=> 'Challenge Cup',
 						),
 						array(
-							'value'		=> 'X',
+							'value'		=> 'T',
 							'text'		=> 'Challenge Trophy'
 						)
 					)
