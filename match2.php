@@ -140,7 +140,7 @@
 			</tr>
 			<tr class="badscore">
 				<td colspan=4>
-					<i>NOTE: Any club awarding less than fifty points must detail below</i><br>
+					<i>NOTE: A club awarding a mark of 50 or less must detail the reason(s) below</i><br>
 					<textarea id="refereeremarks" name="refereeremarks" rows="5" cols="70"></textarea>
 				</td>
 			</tr>
@@ -153,7 +153,7 @@
 ?>
 		
 		<input class="submitbutton" type="button" onclick="prevPage()" value="Prev"></input>&nbsp;
-		<input class="submitbutton" type="button" onclick="processorder()" value="Next"></input>
+		<input class="submitbutton" type="button" onclick="processorder()" value="Submit"></input>
 	</form>
 	<script>
 		$(document).ready(
@@ -191,7 +191,7 @@
 
 			      	$("#refereescore").change(
 					      	function() {
-						      	if ($(this).val() < 50) {
+						      	if ($(this).val() <= 50) {
 							      	$(".badscore").show();
 							      	
 						      	} else {
@@ -238,8 +238,8 @@
 				return false;
 			}
 
-			if (score < 50 && $("#refereeremarks").val() == "") {
-				pwAlert("Any club awarding less than fifty points must detail below");
+			if (score <= 50 && $("#refereeremarks").val() == "") {
+				pwAlert("A club awarding a mark of 50 or less must detail the reason(s) below");
 				return false;
 			}
 			

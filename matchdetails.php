@@ -32,7 +32,7 @@
 	$crud->table = "{$_SESSION['DB_PREFIX']}matchdetails";
 	
 	if (isUserInRole("ADMIN")) {
-		$crud->sql = "SELECT A.*, 
+		$crud->sql = "SELECT A.*, A.id AS uniqueid,
 					  B.name AS refereename, 
 					  C.name AS submittedteamname, 
 					  D.name AS oppositionname,
@@ -53,7 +53,7 @@
 		$crud->allowAdd = false;
 		$crud->allowEdit = false;
 		$crud->allowRemove = false;
-		$crud->sql = "SELECT A.*, 
+		$crud->sql = "SELECT A.*, A.id AS uniqueid,
 					  B.name AS refereename, 
 					  C.name AS submittedteamname, 
 					  D.name AS oppositionname,
@@ -68,7 +68,7 @@
 					  LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}teamagegroup E
 					  ON E.id = A.agegroupid
 					  WHERE A.teamid = $teamid;
-					  ORDER BY A.matchdate DESC";
+					  ORDER BY A.id DESC";
 	}
 	
 	$crud->columns = array(
@@ -92,8 +92,8 @@
 			),
 			array(
 				'name'       => 'division',
-				'length' 	 => 10,
-				'label' 	 => 'Division',
+				'length' 	 => 17,
+				'label' 	 => 'Division / Group',
 				'type'       => 'COMBO',
 				'options'    => array(
 						array(
@@ -101,32 +101,64 @@
 							'text'		=> 'N/A'
 						),
 						array(
+							'value'		=> '1',
+							'text'		=> 'League 1'
+						),
+						array(
 							'value'		=> 'P',
 							'text'		=> 'Premier'
 						),
 						array(
-							'value'		=> '1',
-							'text'		=> 'Division 1'
-						),
-						array(
 							'value'		=> '2',
-							'text'		=> 'Division 2'
+							'text'		=> 'League 2'
 						),
 						array(
 							'value'		=> '3',
-							'text'		=> 'Division 3'
+							'text'		=> 'League 3'
 						),
 						array(
 							'value'		=> '4',
-							'text'		=> 'Division 4'
+							'text'		=> 'League 4'
 						),
 						array(
 							'value'		=> '5',
-							'text'		=> 'Division 5'
+							'text'		=> 'League 5'
 						),
 						array(
 							'value'		=> '6',
-							'text'		=> 'Division 6'
+							'text'		=> 'League 6'
+						),
+						array(
+							'value'		=> 'A',
+							'text'		=> 'A'
+						),
+						array(
+							'value'		=> 'B',
+							'text'		=> 'B'
+						),
+						array(
+							'value'		=> 'C',
+							'text'		=> 'C'
+						),
+						array(
+							'value'		=> 'D',
+							'text'		=> 'D'
+						),
+						array(
+							'value'		=> 'E',
+							'text'		=> 'E'
+						),
+						array(
+							'value'		=> 'F',
+							'text'		=> 'F'
+						),
+						array(
+							'value'		=> 'G',
+							'text'		=> 'G'
+						),
+						array(
+							'value'		=> 'H',
+							'text'		=> 'H'
 						)
 					)
 			),
@@ -139,6 +171,10 @@
 						array(
 							'value'		=> 'L',
 							'text'		=> 'League'
+						),
+						array(
+							'value'		=> 'N',
+							'text'		=> 'Combination'
 						),
 						array(
 							'value'		=> 'C',
@@ -173,8 +209,7 @@
 				'label' 	 => 'Score'
 			),			
 			array(
-				'name'       => 'id',
-				'viewname'   => 'uniqueid',
+				'name'       => 'uniqueid',
 				'length' 	 => 12,
 				'filter'	 => false,
 				'bind' 	 	 => false,

@@ -119,13 +119,6 @@
 				'name'       => 'registrationnumber',
 				'length' 	 => 30,
 				'label' 	 => 'Registration Number'
-			),			
-			array(
-				'name'       => 'dob',
-				'length' 	 => 10,
-				'datatype'	 => 'date',
-				'suffix'	 => 'dd/mm/yyyy',
-				'label' 	 => 'Date of Birth'
 			)
 		);
 

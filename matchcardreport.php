@@ -35,6 +35,9 @@
 			} else if ($this->headermember['leaguecup'] == "C") {
 				$leaguecup = "Challenge Cup";
 				
+			} else if ($this->headermember['leaguecup'] == "N") {
+				$leaguecup = "Combination";
+				
 			} else if ($this->headermember['leaguecup'] == "X") {
 				$leaguecup = "Cup";
 				
@@ -49,22 +52,46 @@
 				$division = "Premier";
 				
 			} else if ($this->headermember['division'] == "1") {
-				$division = "Division 1";
+				$division = "1";
 				
 			} else if ($this->headermember['division'] == "2") {
-				$division = "Division 2";
+				$division = "2";
 				
 			} else if ($this->headermember['division'] == "3") {
-				$division = "Division 3";
+				$division = "3";
 				
 			} else if ($this->headermember['division'] == "4") {
-				$division = "Division 4";
+				$division = "4";
 				
 			} else if ($this->headermember['division'] == "5") {
-				$division = "Division 5";
+				$division = "5";
 				
 			} else if ($this->headermember['division'] == "6") {
-				$division = "Division 6";
+				$division = "6";
+				
+			} else if ($this->headermember['division'] == "A") {
+				$division = "A";
+				
+			} else if ($this->headermember['division'] == "B") {
+				$division = "B";
+				
+			} else if ($this->headermember['division'] == "C") {
+				$division = "C";
+				
+			} else if ($this->headermember['division'] == "D") {
+				$division = "D";
+				
+			} else if ($this->headermember['division'] == "E") {
+				$division = "E";
+				
+			} else if ($this->headermember['division'] == "F") {
+				$division = "F";
+				
+			} else if ($this->headermember['division'] == "G") {
+				$division = "G";
+				
+			} else if ($this->headermember['division'] == "H") {
+				$division = "H";
 			}
 			
 			$this->addText( 15, 20 + $this->margin, "Date of Match", 10, 4, 'B');
@@ -73,7 +100,7 @@
 			$this->addText( 110, 20 + $this->margin, $this->headermember['agegroupname'], 10, 4, '');
 			
 			if ($division != "") {
-				$this->addText( 133, 20 + $this->margin, "Division", 10, 4, 'B');
+				$this->addText( 133, 20 + $this->margin, "Division / Group", 10, 4, 'B');
 				$this->addText( 165, 20 + $this->margin, $division, 10, 4, '');
 			}
 			
@@ -183,20 +210,26 @@
     											
     						$this->addText( 15, $dynamicY, "Changing Rooms", 10, 4, '');
     						$dynamicY = $this->addText( 150, $dynamicY, $this->getRateDescription($this->headermember['ratechangingrooms']), 10, 4, '') + 1;
-
+												
+	    					$this->addText( 15, $dynamicY, "Did you check your opponent players ID cards", 10, 4, '');
+	    					$dynamicY = $this->addText( 150, $dynamicY, ($this->headermember['opponentids'] == 1) ? "Yes" : "No", 10, 4, '') + 1;						
+    						
+    						$this->addText( 15, $dynamicY, "Did the pitch have the required barriers, cones and markings", 10, 4, '');
+	    					$dynamicY = $this->addText( 150, $dynamicY, ($this->headermember['requiredbarriers'] == 1) ? "Yes" : "No", 10, 4, '') + 1;
+    						
 						} else {
 							$this->addText( 15, $dynamicY, "Did the pitch have the required barriers, cones and markings", 10, 4, '');
     						$dynamicY = $this->addText( 150, $dynamicY, ($this->headermember['requiredbarriers']) == 1 ? "Yes" : "No", 10, 4, '') + 1;
     					
 							$this->addText( 15, $dynamicY, "Was the pitch size/condition, goals and changing rooms adequate", 10, 4, '');
     						$dynamicY = $this->addText( 150, $dynamicY, ($this->headermember['pitchsize'] == 1) ? "Yes" : "No", 10, 4, '') + 1;
-						}
 						
-    					$this->addText( 15, $dynamicY, "Did your opponent players, management and spectators comply with the Codes", 10, 4, '');
-    					$dynamicY = $this->addText( 150, $dynamicY, ($this->headermember['complycodes'] == 1) ? "Yes" : "No", 10, 4, '') + 1;
-											
-    					$this->addText( 15, $dynamicY, "Did you check your opponent players ID cards", 10, 4, '');
-    					$dynamicY = $this->addText( 150, $dynamicY, ($this->headermember['opponentids'] == 1) ? "Yes" : "No", 10, 4, '') + 1;						
+	    					$this->addText( 15, $dynamicY, "Did your opponent players, management and spectators comply with the Codes", 10, 4, '');
+	    					$dynamicY = $this->addText( 150, $dynamicY, ($this->headermember['complycodes'] == 1) ? "Yes" : "No", 10, 4, '') + 1;
+												
+	    					$this->addText( 15, $dynamicY, "Did you check your opponent players ID cards", 10, 4, '');
+	    					$dynamicY = $this->addText( 150, $dynamicY, ($this->headermember['opponentids'] == 1) ? "Yes" : "No", 10, 4, '') + 1;						
+						}
 						
     					if ( $this->headermember['remarks'] != "") {
 							$this->addText( 15, $dynamicY + 3, "Remarks", 10, 4, 'B');

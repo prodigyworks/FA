@@ -72,7 +72,7 @@
 						$line=array(
 								"Referee"  => $member['refereeename'],
 								"Games"  => $member['matches'],
-								"Average Score"  => $member['score'] / $member['matches']
+								"Average Score"  => number_format($member['score'] / $member['matches'], 1)
 							);
 							
 						$this->addLine( $this->GetY(), $line );

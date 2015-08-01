@@ -168,7 +168,7 @@
 		
 		$details = "Match report attached for match on " . $_POST['matchdate'];
 		
-		$file = "uploads/matchcard$id" . session_id() . ".pdf";
+		$file = "uploads/matchform$id" . session_id() . ".pdf";
 			
 		$report = new MatchCardReport( 'P', 'mm', 'A4', $matchid);
 		$report->Output($file, "F");	

@@ -33,7 +33,7 @@
 	}
 	
 	$crud = new TeamCrud();
-	$crud->dialogwidth = 650;
+	$crud->dialogwidth = 450;
 	$crud->title = "Teams";
 	$crud->table = "{$_SESSION['DB_PREFIX']}teamagegroup";
 	$crud->sql = "SELECT A.*, C.name AS clubname
@@ -136,14 +136,6 @@
 				'label' 	 => 'Team'
 			),
 			array(
-				'name'       => 'imageid',
-				'type'		 => 'IMAGE',
-				'required'   => false,
-				'length' 	 => 35,
-				'showInView' => false,
-				'label' 	 => 'Logo'
-			),			
-			array(
 				'name'       => 'firstname',
 				'length' 	 => 15,
 				'label' 	 => 'First Name'
@@ -162,12 +154,6 @@
 				'name'       => 'telephone',
 				'length' 	 => 12,
 				'label' 	 => 'Telephone'
-			),
-			array(
-				'name'       => 'fax',
-				'length' 	 => 12,
-				'required' 	 => false,
-				'label' 	 => 'Fax'
 			)
 		);
 

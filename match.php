@@ -56,17 +56,18 @@
 						<OPTION value="T">Challenge Trophy</OPTION>
 					</SELECT>
 				</td>
-				<td>Division</td>
+				<td>Division / Group</td>
 				<td>
 					<SELECT id="division" name="division">
 						<OPTION value="X">N/A</OPTION>
-						<OPTION value="P">Premier</OPTION>
-						<OPTION value="1">Division 1</OPTION>
-						<OPTION value="2">Division 2</OPTION>
-						<OPTION value="3">Division 3</OPTION>
-						<OPTION value="4">Division 4</OPTION>
-						<OPTION value="5">Division 5</OPTION>
-						<OPTION value="6">Division 6</OPTION>
+						<OPTION value="1">A</OPTION>
+						<OPTION value="2">B</OPTION>
+						<OPTION value="3">C</OPTION>
+						<OPTION value="4">D</OPTION>
+						<OPTION value="5">E</OPTION>
+						<OPTION value="6">F</OPTION>
+						<OPTION value="7">G</OPTION>
+						<OPTION value="8">H</OPTION>
 					</SELECT>
 				</td>
 			</tr>
@@ -102,7 +103,7 @@
 				function() {
 					$("#leaguecup").change(
 							function() {
-								if ($(this).val() != "L") {
+								if ($(this).val() != "L" && $(this).val() != "N") {
 									$("#division").val("X");
 									$("#division").attr("disabled", true);
 
@@ -124,14 +125,38 @@
 												var agegroup = data[0].age;
 
 												if (agegroup < 12) {
-													$("#leaguecup").attr("disabled", true);
-													$("#leaguecup").val("L");
-													$("#division").attr("disabled", false);
 													$("#orderform").attr("action", "match2u7.php");
+													$("#leaguecup").html("<OPTION value='N'>Combination</OPTION>");
+													$("#division").attr("disabled", false);
+													
+													$("#division").html(
+															"<OPTION value='X'>N/A</OPTION>" +
+															"<OPTION value='A'>A</OPTION>" +
+															"<OPTION value='B'>B</OPTION>" +
+															"<OPTION value='C'>C</OPTION>" +
+															"<OPTION value='D'>D</OPTION>" +
+															"<OPTION value='E'>E</OPTION>" +
+															"<OPTION value='F'>F</OPTION>" +
+															"<OPTION value='G'>G</OPTION>" +
+															"<OPTION value='H'>H</OPTION>");
 													
 												} else {
-													$("#leaguecup").attr("disabled", false);
 													$("#orderform").attr("action", "match2.php");
+
+													$("#leaguecup").html(
+														"<OPTION value='L'>League</OPTION>" +
+														"<OPTION value='C'>Challenge Cup</OPTION>" +
+														"<OPTION value='T'>Challenge Trophy</OPTION>");
+
+													$("#division").html(
+														"<OPTION value='X'>N/A</OPTION>" +
+														"<OPTION value='P'>Premier</OPTION>" +
+														"<OPTION value='1'>1</OPTION>" +
+														"<OPTION value='2'>2</OPTION>" +
+														"<OPTION value='3'>3</OPTION>" +
+														"<OPTION value='4'>4</OPTION>" +
+														"<OPTION value='5'>5</OPTION>" +
+														"<OPTION value='6'>6</OPTION>");
 												}
 											}
 										},
@@ -177,7 +202,7 @@
 		}
 		
 		if ($("#hometeamid").val() != "<?php echo getLoggedOnTeamID()?>" && $("#oppositionid").val() != "<?php echo getLoggedOnTeamID()?>") {
-			pwAlert("Either the home or away team has to be your team");
+			pwAlert("Either home or away team must be your team and MUST be selected from the dropdown list");
 			return false;
 		}
 		
@@ -191,8 +216,8 @@
 			return false;
 		}
 		
-		if ($("#leaguecup").val() == "L" && $("#division").val() == "X") {
-			pwAlert("Division must be specified");
+		if ($("#division").val() == "X") {
+			pwAlert("Division / Group must be specified");
 			return false;
 		}
 		

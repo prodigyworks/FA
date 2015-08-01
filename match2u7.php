@@ -335,7 +335,7 @@
 ?>
 		
 		<input class="submitbutton" type="button" onclick="prevPage()" value="Prev"></input>&nbsp;
-		<input class="submitbutton" type="button" onclick="processorder()" value="Next"></input>
+		<input class="submitbutton" type="button" onclick="processorder()" value="Submit"></input>
 	</form>
 	<script>
 		$(document).ready(
