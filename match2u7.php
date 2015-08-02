@@ -370,7 +370,7 @@
 
 			      	$("#refereescore").change(
 					      	function() {
-						      	if ($(this).val() < 50) {
+						      	if ($(this).val() <= 60) {
 							      	$(".badscore").show();
 							      	
 						      	} else {

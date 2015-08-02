@@ -176,7 +176,7 @@
     	sendTeamMessage($teamid, "Match Report Confirmed", $details, "", array($file));
     	sendRoleMessage("LEAGUE", "Match Report Confirmed", $details, "", array($file));
     	
-    	if ($_POST['refereescore'] < 50 && $_POST['refereescore'] > 0) {
+    	if ($_POST['refereescore'] <= 60 && $_POST['refereescore'] > 0) {
     		$refname = GetRefereeName($refereeid);
     		$refdetails = "Referee $refname has scored $refereescore<br><br>Report:<br>" . $_POST['refereeremarks'];
     		
