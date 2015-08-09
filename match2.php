@@ -191,6 +191,12 @@
 
 			      	$("#refereescore").change(
 					      	function() {
+						      	$(this).val(new Number($(this).val()).toFixed(0));
+
+						      	if ($(this).val() == "NaN") {
+							      	$(this).val(0);
+						      	}
+						      	
 						      	if ($(this).val() <= 60) {
 							      	$(".badscore").show();
 							      	

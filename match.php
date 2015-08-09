@@ -48,7 +48,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td>League / Cup</td>
+				<td>Competition</td>
 				<td>
 					<SELECT id="leaguecup" name="leaguecup">
 						<OPTION value="L">League</OPTION>
@@ -216,7 +216,7 @@
 			return false;
 		}
 		
-		if ($("#division").val() == "X") {
+		if (($("#leaguecup").val() == "N" || $("#leaguecup").val() == "L") && $("#division").val() == "X") {
 			pwAlert("Division / Group must be specified");
 			return false;
 		}

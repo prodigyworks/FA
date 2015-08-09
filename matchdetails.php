@@ -101,32 +101,32 @@
 							'text'		=> 'N/A'
 						),
 						array(
-							'value'		=> '1',
-							'text'		=> 'League 1'
-						),
-						array(
 							'value'		=> 'P',
 							'text'		=> 'Premier'
 						),
 						array(
+							'value'		=> '1',
+							'text'		=> '1'
+						),
+						array(
 							'value'		=> '2',
-							'text'		=> 'League 2'
+							'text'		=> '2'
 						),
 						array(
 							'value'		=> '3',
-							'text'		=> 'League 3'
+							'text'		=> '3'
 						),
 						array(
 							'value'		=> '4',
-							'text'		=> 'League 4'
+							'text'		=> '4'
 						),
 						array(
 							'value'		=> '5',
-							'text'		=> 'League 5'
+							'text'		=> '5'
 						),
 						array(
 							'value'		=> '6',
-							'text'		=> 'League 6'
+							'text'		=> '6'
 						),
 						array(
 							'value'		=> 'A',
@@ -243,7 +243,7 @@
 				'script' 	  => 'editDocuments'
 			),
 			array(
-				'title'		  => 'Match Card',
+				'title'		  => 'Match Result Form',
 				'imageurl'	  => 'images/print.png',
 				'script' 	  => 'reportCard'
 			)

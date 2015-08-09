@@ -145,6 +145,7 @@
 				$sql =  "SELECT 
 						 A.*, 
 						 DATE_FORMAT(A.matchdate, '%d/%m/%Y') AS matchdate,
+						 DATE_FORMAT(A.metacreateddate, '%d/%m/%Y %H:%i') AS createddate,
 						 B.name AS refereename, C.name AS submittedteamname, D.name AS oppositionname, 
 						 E.name AS agegroupname, E.age
 						 FROM  {$_SESSION['DB_PREFIX']}matchdetails A
@@ -241,7 +242,7 @@
 			            $dynamicY = $this->addText( 15, $dynamicY + 2, "REFEREE SECTION", 10, 4, 'B') + 3;
 						
 						$this->addText( 15, $dynamicY, "Referee", 10, 4, 'B');
-						$dynamicY = $this->addText( 45, $dynamicY, $this->headermember['referee'], 10, 4, '') + 3;
+						$this->addText( 45, $dynamicY, $this->headermember['referee'], 10, 4, '') + 3;
 					
 						if ($this->headermember['refereescore'] > 0) {
 							$this->addText( 105, $dynamicY, "Appointed by League", 10, 4, 'B');
@@ -259,8 +260,11 @@
 						
 					    $this->Line( 15, $dynamicY, 195, $dynamicY);
 					    
-						$dynamicY = $this->addText( 15, $dynamicY + 3, "SIGNED", 10, 4, 'B') + 2;
+						$this->addText( 146, $dynamicY + 3, "Submitted : " . $this->headermember['createddate'], 10, 4, 'B');
+					    $dynamicY = $this->addText( 15, $dynamicY + 3, "SIGNED", 10, 4, 'B') + 2;
 						$this->DynamicImage($this->headermember['imageid'], 15, $dynamicY);
+						
+						
 					}
 					
 					
