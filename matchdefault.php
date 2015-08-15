@@ -3,10 +3,10 @@
 	
 	start_db();
 	
-	if (isUserInRole("ADMIN")) {
-		header("location: matchdetails.php");
+	if (isUserInRole("TEAM")) {
+		header("location: match.php");
 		
 	} else {
-		header("location: match.php");
+		header("location: matchdetails.php");
 	}
 ?>

@@ -26,6 +26,7 @@
 	$email = clean($_POST['email']);
 	$cemail = clean($_POST['confirmemail']);
 	$teamid = clean($_POST['teamid']);
+	$clubid = clean($_POST['clubid']);
 	
 	$mobile = "";
 	
@@ -97,9 +98,9 @@
 		
 		//Create INSERT query
 		$qry = "INSERT INTO {$_SESSION['DB_PREFIX']}members " .
-				"(firstname, lastname, fullname, login, passwd, email, imageid, accepted, guid, status, teamid, metacreateddate, metacreateduserid, metamodifieddate, metamodifieduserid) " .
+				"(firstname, lastname, fullname, login, passwd, email, imageid, accepted, guid, status, clubid, teamid, metacreateddate, metacreateduserid, metamodifieddate, metamodifieduserid) " .
 				"VALUES" .
-				"('$fname','$lname', '$fullname', $login', '".md5($_POST['password'])."', '$email', $imageid, 'Y', '$guid', 'Y', $teamid, NOW(), " . getLoggedOnMemberID() . ", NOW(), " .  getLoggedOnMemberID() . ")";
+				"('$fname','$lname', '$fullname', '$login', '".md5($_POST['password'])."', '$email', $imageid, 'Y', '$guid', 'Y', $clubid, $teamid, NOW(), " . getLoggedOnMemberID() . ", NOW(), " .  getLoggedOnMemberID() . ")";
 		$result = @mysql_query($qry);
 		$memberid = mysql_insert_id();
 		
@@ -113,18 +114,43 @@
 		$qry = "INSERT INTO {$_SESSION['DB_PREFIX']}userroles(memberid, roleid, metacreateddate, metacreateduserid, metamodifieddate, metamodifieduserid) VALUES($memberid, 'USER', NOW(), " . getLoggedOnMemberID() . ", NOW(), " .  getLoggedOnMemberID() . ")";
 		$result = @mysql_query($qry);
 		
-		
 		if (isset($_POST['accounttype'])) {
 			$accountrole = $_POST['accounttype'];
 
 			$qry = "INSERT INTO {$_SESSION['DB_PREFIX']}userroles(memberid, roleid, metacreateddate, metacreateduserid, metamodifieddate, metamodifieduserid) VALUES($memberid, '$accountrole', NOW(), " . getLoggedOnMemberID() . ", NOW(), " .  getLoggedOnMemberID() . ")";
 			$result = @mysql_query($qry);
 		}
+
+		if ($teamid != 0) {
+			$qry = "UPDATE {$_SESSION['DB_PREFIX']}teamagegroup SET 
+					firstname = '$fname', 
+					lastname = '$lname',
+					email = '$email',
+					login = $memberid
+					WHERE id = $teamid 
+					AND (firstname IS NULL OR firstname = '')";
+			$result = mysql_query($qry);
+	
+			if (! $result) {
+				logError("UPDATE team failed ($qry):" . mysql_error());
+			}
+		}
+
+		if ($clubid != 0) {
+			$qry = "UPDATE {$_SESSION['DB_PREFIX']}team SET 
+					firstname = '$fname', 
+					lastname = '$lname',
+					email = '$email'
+					WHERE id = $clubid 
+					AND (firstname IS NULL OR firstname = '')";
+			$result = mysql_query($qry);
+	
+			if (! $result) {
+				logError("UPDATE team failed ($qry):" . mysql_error());
+			}
+		}
 		
-		$_SESSION['SESS_FIRST_NAME'] = $fname;
-		$_SESSION['SESS_LAST_NAME'] = $lname;
-		$_SESSION['SESS_IMAGE_ID'] = $imageid;
-		$_SESSION['SESS_TEAM_ID'] = $teamid;
+		mysql_query("COMMIT");
 		
 		sendRoleMessage("ADMIN", "User Registration", "User " . $login . " has been registered as a user.<br>Password : " . $_POST['password']);
 		sendUserMessage($memberid, "User Registration", "<h3>Welcome $fname $lname.</h3><br>You have been invited to become a member of 'iAfrica Database'.<br>Please click on the <a href='" . getSiteConfigData()->domainurl . "/index.php'>link</a> to activate your account.<br><br><h4>Login details</h4>User ID : $login<br>Password : " . $_POST['password']);
@@ -135,7 +161,7 @@
 		} else {
 			logError("1 Query failed:" . mysql_error());
 		}
-		
+			
 	} else {
 		$memberid = $_GET['id'];
 		$qry = "UPDATE {$_SESSION['DB_PREFIX']}members " .
@@ -143,6 +169,7 @@
 				"firstname = '$fname', " .
 				"lastname = '$lname', " .
 				"teamid = $teamid, " .
+				"clubd = $clubid, " .
 				"imageid = $imageid, " .
 				"lastaccessdate = NOW(), ";
 				

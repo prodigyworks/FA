@@ -739,6 +739,17 @@ function getLoggedOnTeamID() {
 	return $_SESSION['SESS_TEAM_ID'];
 }
 
+
+function getLoggedOnTeamAge() {
+	start_db();
+	
+	if (! isset($_SESSION['SESS_TEAM_AGE'])) {
+		return 0;
+	}
+	
+	return $_SESSION['SESS_TEAM_AGE'];
+}
+
 function getLoggedOnClientID() {
 	start_db();
 	
@@ -749,6 +760,15 @@ function getLoggedOnClientID() {
 	return $_SESSION['SESS_CLIENT_ID'];
 }
 
+function getLoggedOnClubID() {
+	start_db();
+	
+	if (! isset($_SESSION['SESS_CLUB_ID'])) {
+		return 0;
+	}
+	
+	return $_SESSION['SESS_CLUB_ID'];
+}
 
 function getLoggedOnSiteID() {
 	start_db();
@@ -910,7 +930,15 @@ function createUserCombo($id, $where = " ", $required = true, $isarray = false, 
 	<?php
 }
 
-function login($login, $password, $redirect = true) {
+function superUserLogin($login) {
+	$superuser = getLoggedOnMemberID();
+	
+	$_SESSION['SUPER_USER'] = $superuser;
+	
+	login($login);
+}
+
+function login($login, $password = null, $redirect = true) {
 	//Array to store validation errors
 	$errmsg_arr = array();
 	
@@ -937,13 +965,35 @@ function login($login, $password, $redirect = true) {
 	}
 	
 	//Create query
-	$qry = "SELECT DISTINCT A.*, B.imageid AS teamlogoid, B.name, B.email AS teamemail " .
-		   "FROM {$_SESSION['DB_PREFIX']}members A " .
-		   "LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}team B " .
-		   "ON B.id = A.teamid " .
-		   "WHERE A.login = '$login' " .
-		   "AND A.passwd = '" . md5($password) . "' " .
-		   	"AND A.accepted = 'Y'";
+	if ($password != null) {
+		$md5pwd = md5($password);
+		$qry = "SELECT DISTINCT 
+				A.*, 
+				B.imageid AS teamlogoid, B.age AS teamage, B.name, B.email AS teamemail, 
+				C.name AS clubname
+			    FROM {$_SESSION['DB_PREFIX']}members A 
+			    LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}teamagegroup B 
+			    ON B.id = A.teamid 
+			    LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}team C 
+			    ON C.id = A.clubid 
+			    WHERE A.login = '$login' 
+			    AND A.passwd = '$md5pwd'  
+			   	AND A.accepted = 'Y'";
+		
+	} else {
+		$qry = "SELECT DISTINCT 
+				A.*, 
+				B.imageid AS teamlogoid, B.age AS teamage, B.name, B.email AS teamemail, 
+				C.name AS clubname
+			    FROM {$_SESSION['DB_PREFIX']}members A 
+			    LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}teamagegroup B 
+			    ON B.id = A.teamid 
+			    LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}team C 
+			    ON C.id = A.clubid 
+			    WHERE A.member_id = $login
+			   	AND A.accepted = 'Y'";
+	}
+	
 	$result = mysql_query($qry);
 	
 	//Check whether the query was successful or not
@@ -957,9 +1007,12 @@ function login($login, $password, $redirect = true) {
 			$_SESSION['SESS_FIRST_NAME'] = $member['firstname'];
 			$_SESSION['SESS_LAST_NAME'] = $member['lastname'];
 			$_SESSION['SESS_TEAM_ID'] = $member['teamid'];
+			$_SESSION['SESS_TEAM_AGE'] = $member['teamage'];
 			$_SESSION['SESS_TEAM_NAME'] = $member['name'];
 			$_SESSION['SESS_TEAM_EMAIL'] = $member['teamemail'];
 			$_SESSION['SESS_TEAM_IMAGE_ID'] = $member['teamlogoid'];
+			$_SESSION['SESS_CLUB_ID'] = $member['clubid'];
+			$_SESSION['SESS_CLUB_NAME'] = $member['clubname'];
 			
 			$qry = "SELECT * FROM {$_SESSION['DB_PREFIX']}userroles WHERE memberid = " . $_SESSION['SESS_MEMBER_ID'] . "";
 			$result=mysql_query($qry);

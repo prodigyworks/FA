@@ -10,6 +10,10 @@
 		
 		public function postScriptEvent() {
 ?>
+
+			function ageReference(node) {
+				return "Under " + node.age;
+			}
 			
 			function editDocuments(node) {
 				viewDocument(node, "addmatchdocument.php", node, "matchdocs", "matchid");
@@ -33,19 +37,29 @@
 	
 	if (isUserInRole("ADMIN")) {
 		$crud->sql = "SELECT A.*, A.id AS uniqueid,
-					  B.name AS refereename, 
-					  C.name AS submittedteamname, 
-					  D.name AS oppositionname,
-					  E.name AS agegroupname, E.age
+					  B.name AS refereename, C.age,
+					  C.name AS submittedteamname
 					  FROM  {$_SESSION['DB_PREFIX']}matchdetails A
 					  LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}referee B
 					  ON B.id = A.refereeid
-					  LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}team C
+					  LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}teamagegroup C
 					  ON C.id = A.teamid
-					  LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}team D
-					  ON D.id = A.oppositionid
-					  LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}teamagegroup E
-					  ON E.id = A.agegroupid
+					  ORDER BY A.id DESC";
+		
+	} else if (isUserInRole("SECRETARY")) {
+		$clubid = getLoggedOnClubID();
+		$crud->allowAdd = false;
+		$crud->allowEdit = false;
+		$crud->allowRemove = false;
+		$crud->sql = "SELECT A.*, A.id AS uniqueid,
+					  B.name AS refereename, C.age,
+					  C.name AS submittedteamname
+					  FROM  {$_SESSION['DB_PREFIX']}matchdetails A
+					  LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}referee B
+					  ON B.id = A.refereeid
+					  LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}teamagegroup C
+					  ON C.id = A.teamid
+					  WHERE C.teamid = $clubid;
 					  ORDER BY A.id DESC";
 		
 	} else {
@@ -54,19 +68,13 @@
 		$crud->allowEdit = false;
 		$crud->allowRemove = false;
 		$crud->sql = "SELECT A.*, A.id AS uniqueid,
-					  B.name AS refereename, 
-					  C.name AS submittedteamname, 
-					  D.name AS oppositionname,
-					  E.name AS agegroupname, E.age
+					  B.name AS refereename, C.age,
+					  C.name AS submittedteamname
 					  FROM  {$_SESSION['DB_PREFIX']}matchdetails A
 					  LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}referee B
 					  ON B.id = A.refereeid
-					  LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}team C
+					  LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}teamagegroup C
 					  ON C.id = A.teamid
-					  LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}team D
-					  ON D.id = A.oppositionid
-					  LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}teamagegroup E
-					  ON E.id = A.agegroupid
 					  WHERE A.teamid = $teamid;
 					  ORDER BY A.id DESC";
 	}
@@ -79,16 +87,15 @@
 				'label' 	 => 'Match Date'
 			),		
 			array(
-				'name'       => 'agegroupid',
-				'type'       => 'DATACOMBO',
-				'length' 	 => 18,
-				'label' 	 => 'Age Group',
-				'table'		 => 'teamagegroup',
-				'required'	 => true,
-				'table_id'	 => 'id',
-				'sortcolumn' => 'E.age',
-				'alias'		 => 'agegroupname',
-				'table_name' => 'name'
+				'name'       => 'ageref',
+				'function'   => 'ageReference',
+				'sortcolumn' => 'C.age',
+				'type'		 => 'DERIVED',
+				'length' 	 => 17,
+				'editable'	 => false,
+				'bind' 	 	 => false,
+				'filter'	 => false,
+				'label' 	 => 'Age Group'
 			),
 			array(
 				'name'       => 'division',
@@ -188,23 +195,23 @@
 			),
 			array(
 				'name'       => 'hometeam',
-				'length' 	 => 20,
+				'length' 	 => 28,
 				'label' 	 => 'Home Team'
 			),
 			array(
 				'name'       => 'hometeamscore',
-				'length' 	 => 12,
+				'length' 	 => 7,
 				'align'		 => 'center',
 				'label' 	 => 'Score'
 			),			
 			array(
 				'name'       => 'opposition',
-				'length' 	 => 20,
+				'length' 	 => 28,
 				'label' 	 => 'Away Team'
 			),
 			array(
 				'name'       => 'awayteamscore',
-				'length' 	 => 12,
+				'length' 	 => 7,
 				'align'		 => 'center',
 				'label' 	 => 'Score'
 			),			
@@ -220,7 +227,7 @@
 			array(
 				'name'       => 'teamid',
 				'type'       => 'DATACOMBO',
-				'length' 	 => 18,
+				'length' 	 => 28,
 				'label' 	 => 'Submitted By Team',
 				'table'		 => 'team',
 				'required'	 => true,

@@ -93,14 +93,14 @@
 			),
 			array(
 				'name'       => 'clubname',
-				'length' 	 => 18,
+				'length' 	 => 28,
 				'editable'	 => false,
 				'bind'		 => false,
 				'label' 	 => 'Club'
 			),			
 			array(
 				'name'       => 'teamname',
-				'length' 	 => 12,
+				'length' 	 => 28,
 				'editable'	 => false,
 				'bind'		 => false,
 				'label' 	 => 'Team'

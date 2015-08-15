@@ -26,8 +26,8 @@
 			
             $this->addText( 15, 19, "Confirmation No", 10, 4, 'B');
 			$this->addText( 45, 19, $this->headermember['id'], 10, 4, '');
-			$this->addText( 85, 19, "Club", 10, 4, 'B');
-			$this->addText( 110, 19, $this->headermember['submittedteamname'], 10, 4, '');
+			$this->addText( 95, 19, "Club", 10, 4, 'B');
+			$this->addText( 120, 19, $this->headermember['clubname'], 10, 4, '');
 			
 			if ($this->headermember['leaguecup'] == "L") {
 				$leaguecup = "League";
@@ -96,8 +96,8 @@
 			
 			$this->addText( 15, 20 + $this->margin, "Date of Match", 10, 4, 'B');
 			$this->addText( 45, 20 + $this->margin, $this->headermember['matchdate'], 10, 4, '');
-			$this->addText( 85, 20 + $this->margin, "Age Group", 10, 4, 'B');
-			$this->addText( 110, 20 + $this->margin, $this->headermember['agegroupname'], 10, 4, '');
+			$this->addText( 95, 20 + $this->margin, "Age Group", 10, 4, 'B');
+			$this->addText( 120, 20 + $this->margin, $this->headermember['age'], 10, 4, '');
 			
 			if ($division != "") {
 				$this->addText( 133, 20 + $this->margin, "Division / Group", 10, 4, 'B');
@@ -109,15 +109,15 @@
 
 			$this->addText( 15, 27 + $this->margin, "Home Team", 10, 4, 'B');
 			$this->addText( 45, 27 + $this->margin, $hometeam, 10, 4, '');
-			$this->addText( 85, 27 + $this->margin, "Goals", 10, 4, 'B');
-			$this->addText( 110, 27 + $this->margin, $this->headermember['hometeamscore'], 10, 4, '');
+			$this->addText( 95, 27 + $this->margin, "Goals", 10, 4, 'B');
+			$this->addText( 120, 27 + $this->margin, $this->headermember['hometeamscore'], 10, 4, '');
 			$this->addText( 133, 27 + $this->margin, "Competition", 10, 4, 'B');
 			$this->addText( 165, 27 + $this->margin, $leaguecup, 10, 4, '');
 			
 			$this->addText( 15, 34 + $this->margin, "Away Team", 10, 4, 'B');
 			$this->addText( 45, 34 + $this->margin, $awayteam, 10, 4, '');
-			$this->addText( 85, 34 + $this->margin, "Goals", 10, 4, 'B');
-			$this->addText( 110, 34 + $this->margin, $this->headermember['awayteamscore'], 10, 4, '');
+			$this->addText( 95, 34 + $this->margin, "Goals", 10, 4, 'B');
+			$this->addText( 120, 34 + $this->margin, $this->headermember['awayteamscore'], 10, 4, '');
 			
 			$this->addText( 15, 40 + $this->margin, "The following players represented", 10, 4, '');
 			$this->addText( 15, 45 + $this->margin, $this->headermember['submittedteamname'], 10, 4, 'B');
@@ -146,17 +146,14 @@
 						 A.*, 
 						 DATE_FORMAT(A.matchdate, '%d/%m/%Y') AS matchdate,
 						 DATE_FORMAT(A.metacreateddate, '%d/%m/%Y %H:%i') AS createddate,
-						 B.name AS refereename, C.name AS submittedteamname, D.name AS oppositionname, 
-						 E.name AS agegroupname, E.age
+						 B.name AS refereename, C.name AS submittedteamname, C.age, D.name AS clubname
 						 FROM  {$_SESSION['DB_PREFIX']}matchdetails A
 						 LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}referee B
 						 ON B.id = A.refereeid
-						 LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}team C
+						 LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}teamagegroup C
 						 ON C.id = A.teamid
 						 LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}team D
-						 ON D.id = A.oppositionid
-						 LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}teamagegroup E
-						 ON E.id = A.agegroupid
+						 ON D.id = C.teamid
 						 WHERE A.id = $id";
 				$result = mysql_query($sql);
 				

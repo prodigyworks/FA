@@ -45,14 +45,6 @@
 				'label' 	 => 'Name'
 			),
 			array(
-				'name'       => 'imageid',
-				'type'		 => 'IMAGE',
-				'required'   => false,
-				'length' 	 => 35,
-				'showInView' => false,
-				'label' 	 => 'Logo'
-			),			
-			array(
 				'name'       => 'firstname',
 				'length' 	 => 15,
 				'label' 	 => 'First Name'
@@ -70,13 +62,7 @@
 			array(
 				'name'       => 'telephone',
 				'length' 	 => 12,
-				'label' 	 => 'Telephone'
-			),
-			array(
-				'name'       => 'fax',
-				'length' 	 => 12,
-				'required' 	 => false,
-				'label' 	 => 'Fax'
+				'label' 	 => 'Contact Number'
 			)
 		);
 

@@ -26,15 +26,34 @@ if( isset($_SESSION['ERRMSG_ARR']) && is_array($_SESSION['ERRMSG_ARR']) && count
 	      <td>Account Type </td>
 	      <td>
 	      	<SELECT id="accounttype" name="accounttype" onchange="accounttype_onchange()">
+<?php 
+				if (isUserInRole("ADMIN")) {
+?>
 	      		<OPTION value="ADMIN">Administration</OPTION>
-	      		<OPTION value="TEAM">Team</OPTION>
+	      		<OPTION value="SECRETARY">Secretary</OPTION>
+<?php 
+				}
+?>
+<?php 
+				if (isUserInRole("SECRETARY")) {
+?>
+	      		<OPTION value="TEAM">Manager</OPTION>
+<?php 
+				}
+?>
 	      	</SELECT>
 	      </td>
 	    </tr>
 	    <tr id="clienttype" style="display:none">
-	      <td>Client</td>
+	      <td>Team</td>
 	      <td>
-	      	<?php createCombo("teamid", "id", "name", "{$_SESSION['DB_PREFIX']}team", "", false)?>
+	      	<?php createCombo("teamid", "id", "name", "{$_SESSION['DB_PREFIX']}teamagegroup", "WHERE teamid = " . getLoggedOnClubID(), false)?>
+	      </td>
+	    </tr>
+	    <tr id="sectype" style="display:none">
+	      <td>Club</td>
+	      <td>
+	      	<?php createCombo("clubid", "id", "name", "{$_SESSION['DB_PREFIX']}team", "", false)?>
 	      </td>
 	    </tr>
 	    <tr>
@@ -82,6 +101,13 @@ if( isset($_SESSION['ERRMSG_ARR']) && is_array($_SESSION['ERRMSG_ARR']) && count
 </div>
 <script>
 	$(document).ready(function() {
+<?php 
+		if (isUserInRole("SECRETARY")) {
+?>
+		$("#accounttype").val("SECRETARY").trigger("change");
+<?php
+		}
+?>
 		$(".pwd").blur(verifypassword);
 		$(".logintext").blur(checkLogin);
 		$("#email").blur(checkEmail);
@@ -91,12 +117,21 @@ if( isset($_SESSION['ERRMSG_ARR']) && is_array($_SESSION['ERRMSG_ARR']) && count
 	});
 
 	function accounttype_onchange() {
-		if ($("#accounttype").val() == "A") {
+		if ($("#accounttype").val() == "ADMIN") {
 			$("#teamid").val("0");
+			$("#clubid").val("0");
 			$("#clienttype").hide();
+			$("#sectype").hide();
 
+		} else if ($("#accounttype").val() == "SECRETARY") {
+			$("#clienttype").hide();
+			$("#teamid").val("0");
+			$("#sectype").show();
+			
 		} else {
 			$("#clienttype").show();
+			$("#clubid").val("0");
+			$("#sectype").hide();
 		}
 	}
 				

@@ -13,10 +13,20 @@
 		
 		public function postScriptEvent() {
 ?>
-			function age_onchange() {
-				$("#editform #name").val("Under " + $(this).val());
+			function login(node) {
+				callAjax(
+						"finddata.php", 
+						{ 
+							sql: "SELECT login FROM <?php echo $_SESSION['DB_PREFIX'];?>teamagegroup WHERE id = " + node
+						},
+						function(data) {
+							if (data.length == 1 && data[0].login != null) {
+								window.location.href = "autologin.php?login=" + data[0].login;
+							}
+						}
+					);				
 			}
-			
+		
 			function editDocuments(node) {
 				viewDocument(node, "addleveldocument.php", node, "teamagegroupdocs", "agegroupid");
 			}
@@ -25,23 +35,39 @@
 		}
 	}
 	
+	$crud = new TeamCrud();
+	
 	if (isset($_GET['id'])) {
 		$teamid = $_GET['id'];
+		$crud->sql = "SELECT A.*, C.name AS clubname
+					  FROM  {$_SESSION['DB_PREFIX']}teamagegroup A
+					  INNER JOIN {$_SESSION['DB_PREFIX']}team C
+					  ON C.id = A.teamid
+					  WHERE A.teamid = $teamid
+					  ORDER BY A.age";
+		
+	} else if (isUserInRole("SECRETARY")) {
+		$clubid = getLoggedOnClubID();
+		$crud->sql = "SELECT A.*, C.name AS clubname
+					  FROM  {$_SESSION['DB_PREFIX']}teamagegroup A
+					  INNER JOIN {$_SESSION['DB_PREFIX']}team C
+					  ON C.id = A.teamid
+					  WHERE A.teamid = $clubid
+					  ORDER BY A.age";
 		
 	} else {
 		$teamid = getLoggedOnTeamID();
+		$crud->sql = "SELECT A.*, C.name AS clubname
+					  FROM  {$_SESSION['DB_PREFIX']}teamagegroup A
+					  INNER JOIN {$_SESSION['DB_PREFIX']}team C
+					  ON C.id = A.teamid
+					  WHERE A.id = $teamid
+					  ORDER BY A.age";
 	}
 	
-	$crud = new TeamCrud();
 	$crud->dialogwidth = 450;
 	$crud->title = "Teams";
 	$crud->table = "{$_SESSION['DB_PREFIX']}teamagegroup";
-	$crud->sql = "SELECT A.*, C.name AS clubname
-				  FROM  {$_SESSION['DB_PREFIX']}teamagegroup A
-				  INNER JOIN {$_SESSION['DB_PREFIX']}team C
-				  ON C.id = A.teamid
-				  WHERE A.teamid = $teamid
-				  ORDER BY A.age";
 	$crud->columns = array(
 			array(
 				'name'       => 'id',
@@ -56,21 +82,19 @@
 			),
 			array(
 				'name'       => 'clubname',
-				'length' 	 => 18,
+				'length' 	 => 28,
 				'editable'	 => false,
 				'bind'		 => false,
 				'label' 	 => 'Club'
 			),			
 			array(
 				'name'       => 'name',
-				'length' 	 => 18,
-				'hidden'	 => true,
+				'length' 	 => 28,
 				'label' 	 => 'Team'
 			),			
 			array(
 				'name'       => 'age',
 				'type'		 => 'COMBO',
-				'onchange'	 => 'age_onchange',
 				'showInView' => false,
 				'options'    => array(
 						array(
@@ -123,17 +147,7 @@
 						)
 					),
 				'length' 	 => 15,
-				'label' 	 => 'Team'
-			),
-			array(
-				'name'       => 'teamid',
-				'datatype'	 => 'integer',
-				'length' 	 => 6,
-				'showInView' => false,
-				'filter'	 => false,
-				'editable' 	 => false,
-				'default'	 => $teamid,
-				'label' 	 => 'Team'
+				'label' 	 => 'Age Group'
 			),
 			array(
 				'name'       => 'firstname',
@@ -167,6 +181,11 @@
 				'title'		  => 'Players',
 				'imageurl'	  => 'images/team.png',
 				'application' => 'players.php'
+			),
+			array(
+				'title'		  => 'Log In',
+				'imageurl'	  => 'images/lock.png',
+				'script' 	  => 'login'
 			)
 		);
 		

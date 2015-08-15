@@ -44,7 +44,9 @@
 				</td>
 				<td>Age Group</td>
 				<td>
-					<?php createCombo("agegroupid", "id", "name", "{$_SESSION['DB_PREFIX']}teamagegroup", "WHERE teamid = " . getLoggedOnTeamID(), true); ?>
+					<SELECT id="agegroupid" name="agegroupid">
+						<OPTION value="<?php echo getLoggedOnTeamAge(); ?>">Under <?php echo getLoggedOnTeamAge(); ?></OPTION>
+					</SELECT>
 				</td>
 			</tr>
 			<tr>
@@ -74,7 +76,7 @@
 			<tr>
 				<td>Home Team</td>
 				<td>
-					<?php createLazyCombo("hometeamid", "id", "name", "{$_SESSION['DB_PREFIX']}team", "", true, 40); ?>
+					<?php createLazyCombo("hometeamid", "id", "name", "{$_SESSION['DB_PREFIX']}teamagegroup", "WHERE age = " . getLoggedOnTeamAge(), true, 40); ?>
 				</td>
 				<td>Home Team Score</td>
 				<td>
@@ -84,7 +86,7 @@
 			<tr>
 				<td>Away Team</td>
 				<td>
-					<?php createLazyCombo("oppositionid", "id", "name", "{$_SESSION['DB_PREFIX']}team", "", true, 40); ?>
+					<?php createLazyCombo("oppositionid", "id", "name", "{$_SESSION['DB_PREFIX']}teamagegroup", "WHERE age = " . getLoggedOnTeamAge(), true, 40); ?>
 				</td>
 				<td>Away Team Score</td>
 				<td>
@@ -112,76 +114,59 @@
 								}
 							}
 						);
-					
-					$("#agegroupid").change(
-							function() {
-								callAjax(
-										"finddata.php", 
-										{ 
-											sql: "SELECT age FROM <?php echo $_SESSION['DB_PREFIX'];?>teamagegroup WHERE id = " + $(this).val()
-										},
-										function(data) {
-											if (data.length == 1) {
-												var agegroup = data[0].age;
+							
+					if (<?php echo getLoggedOnTeamAge(); ?> < 12) {
+						$("#orderform").attr("action", "match2u7.php");
+						$("#leaguecup").html("<OPTION value='N'>Combination</OPTION>");
+						$("#division").attr("disabled", false);
+						
+						$("#division").html(
+								"<OPTION value='X'>N/A</OPTION>" +
+								"<OPTION value='A'>A</OPTION>" +
+								"<OPTION value='B'>B</OPTION>" +
+								"<OPTION value='C'>C</OPTION>" +
+								"<OPTION value='D'>D</OPTION>" +
+								"<OPTION value='E'>E</OPTION>" +
+								"<OPTION value='F'>F</OPTION>" +
+								"<OPTION value='G'>G</OPTION>" +
+								"<OPTION value='H'>H</OPTION>");
+						
+					} else {
+						$("#orderform").attr("action", "match2.php");
 
-												if (agegroup < 12) {
-													$("#orderform").attr("action", "match2u7.php");
-													$("#leaguecup").html("<OPTION value='N'>Combination</OPTION>");
-													$("#division").attr("disabled", false);
-													
-													$("#division").html(
-															"<OPTION value='X'>N/A</OPTION>" +
-															"<OPTION value='A'>A</OPTION>" +
-															"<OPTION value='B'>B</OPTION>" +
-															"<OPTION value='C'>C</OPTION>" +
-															"<OPTION value='D'>D</OPTION>" +
-															"<OPTION value='E'>E</OPTION>" +
-															"<OPTION value='F'>F</OPTION>" +
-															"<OPTION value='G'>G</OPTION>" +
-															"<OPTION value='H'>H</OPTION>");
-													
-												} else {
-													$("#orderform").attr("action", "match2.php");
+						$("#leaguecup").html(
+							"<OPTION value='L'>League</OPTION>" +
+							"<OPTION value='C'>Challenge Cup</OPTION>" +
+							"<OPTION value='T'>Challenge Trophy</OPTION>");
 
-													$("#leaguecup").html(
-														"<OPTION value='L'>League</OPTION>" +
-														"<OPTION value='C'>Challenge Cup</OPTION>" +
-														"<OPTION value='T'>Challenge Trophy</OPTION>");
+						$("#division").html(
+							"<OPTION value='X'>N/A</OPTION>" +
+							"<OPTION value='P'>Premier</OPTION>" +
+							"<OPTION value='1'>1</OPTION>" +
+							"<OPTION value='2'>2</OPTION>" +
+							"<OPTION value='3'>3</OPTION>" +
+							"<OPTION value='4'>4</OPTION>" +
+							"<OPTION value='5'>5</OPTION>" +
+							"<OPTION value='6'>6</OPTION>");
+					}
 
-													$("#division").html(
-														"<OPTION value='X'>N/A</OPTION>" +
-														"<OPTION value='P'>Premier</OPTION>" +
-														"<OPTION value='1'>1</OPTION>" +
-														"<OPTION value='2'>2</OPTION>" +
-														"<OPTION value='3'>3</OPTION>" +
-														"<OPTION value='4'>4</OPTION>" +
-														"<OPTION value='5'>5</OPTION>" +
-														"<OPTION value='6'>6</OPTION>");
-												}
-											}
-										},
-										false
-									);
-								
-								$.ajax({
-									url: "createplayerlist.php",
-									dataType: 'html',
-									async: false,
-									data: {
-										agegroupid: $("#agegroupid").val(),
-										selected: '<?php echo (isset($_POST['player']) ? json_encode($_POST['player']) : "null"); ?>'
-									},
-									type: "POST",
-									error: function(jqXHR, textStatus, errorThrown) {
-										alert(errorThrown);
-									},
-									success: function(data) {
-										$("#players").html(data).trigger("change");
-									}
-								});								
+					$.ajax({
+							url: "createplayerlist.php",
+							dataType: 'html',
+							async: true,
+							data: {
+								agegroupid: <?php echo getLoggedOnTeamID(); ?>,
+								selected: '<?php echo (isset($_POST['player']) ? json_encode($_POST['player']) : "null"); ?>'
+							},
+							type: "POST",
+							error: function(jqXHR, textStatus, errorThrown) {
+								alert(errorThrown);
+							},
+							success: function(data) {
+								$("#players").html(data).trigger("change");
 							}
-						);
-
+						});								
+	
 <?php 
 					if (isset($_POST['homeaway'])) echo "$('#homeaway').val('" . $_POST['homeaway' ] . "');";
 					if (isset($_POST['division'])) echo "$('#division').val('" . $_POST['division' ] . "');";

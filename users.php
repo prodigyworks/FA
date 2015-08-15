@@ -176,10 +176,12 @@
 	$crud->table = "{$_SESSION['DB_PREFIX']}members";
 	
 	$crud->sql = 
-			"SELECT A.*, B.name AS teamname 
+			"SELECT A.*, B.name AS teamname, C.name AS clubname
 			 FROM {$_SESSION['DB_PREFIX']}members A 
-			 LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}team B
+			 LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}teamagegroup B
 			 ON B.id = A.teamid
+			 LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}team C
+			 ON C.id = A.clubid
 			 ORDER BY A.firstname, A.lastname"; 
 			
 	$crud->columns = array(
@@ -220,11 +222,22 @@
 				'label' 	 => 'Last Name'
 			),
 			array(
+				'name'       => 'clubid',
+				'type'       => 'DATACOMBO',
+				'length' 	 => 29,
+				'label' 	 => 'Club',
+				'table'		 => 'team',
+				'required'	 => true,
+				'table_id'	 => 'id',
+				'alias'		 => 'clubname',
+				'table_name' => 'name'
+			),
+			array(
 				'name'       => 'teamid',
 				'type'       => 'DATACOMBO',
-				'length' 	 => 20,
+				'length' 	 => 29,
 				'label' 	 => 'Team',
-				'table'		 => 'team',
+				'table'		 => 'teamagegroup',
 				'required'	 => true,
 				'table_id'	 => 'id',
 				'alias'		 => 'teamname',
@@ -238,10 +251,12 @@
 			array(
 				'name'       => 'landline',
 				'length' 	 => 13,
+				'required'	 => false,
 				'label' 	 => 'Land line'
 			),
 			array(
 				'name'       => 'mobile',
+				'required'	 => false,
 				'length' 	 => 13,
 				'label' 	 => 'Mobile'
 			),
@@ -272,6 +287,7 @@
 			array(
 				'name'       => 'title',
 				'length'	 => 10,
+				'required'	 => false,
 				'label' 	 => 'Title'
 			),
 			array(

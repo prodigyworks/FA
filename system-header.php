@@ -100,8 +100,11 @@
 											
 											if (isUserInRole("TEAM")) {
 												echo "&nbsp;&nbsp;( " . $_SESSION['SESS_TEAM_NAME'] . " )"; 
+												
+											} else if (isUserInRole("SECRETARY")) {
+												echo "&nbsp;&nbsp;( " . $_SESSION['SESS_CLUB_NAME'] . " )"; 
 											}
-										?>
+											?>
 									</a>
 									<span>
 									&nbsp;|&nbsp;<a href='system-logout.php'>logout</a>
