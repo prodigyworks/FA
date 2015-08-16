@@ -410,7 +410,7 @@ function sendInternalRoleMessage($role, $subject, $message, $attachments = array
 
 function sendTeamMessage($id, $subject, $message, $footer = "", $attachments = array()) {
 	$qry = "SELECT A.email, A.firstname " .
-			"FROM {$_SESSION['DB_PREFIX']}team A " .
+			"FROM {$_SESSION['DB_PREFIX']}teamagegroup A " .
 			"WHERE A.id = $id ";
 	$result = mysql_query($qry);
 	
@@ -768,6 +768,16 @@ function getLoggedOnClubID() {
 	}
 	
 	return $_SESSION['SESS_CLUB_ID'];
+}
+
+function getLoggedOnClubName() {
+	start_db();
+	
+	if (! isset($_SESSION['SESS_CLUB_NAME'])) {
+		return 0;
+	}
+	
+	return $_SESSION['SESS_CLUB_NAME'];
 }
 
 function getLoggedOnSiteID() {

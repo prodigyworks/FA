@@ -91,7 +91,7 @@
 				'function'   => 'ageReference',
 				'sortcolumn' => 'C.age',
 				'type'		 => 'DERIVED',
-				'length' 	 => 17,
+				'length' 	 => 10,
 				'editable'	 => false,
 				'bind' 	 	 => false,
 				'filter'	 => false,
@@ -172,7 +172,7 @@
 			array(
 				'name'       => 'leaguecup',
 				'length' 	 => 15,
-				'label' 	 => 'League / Cup',
+				'label' 	 => 'Competition',
 				'type'       => 'COMBO',
 				'options'    => array(
 						array(
@@ -200,7 +200,7 @@
 			),
 			array(
 				'name'       => 'hometeamscore',
-				'length' 	 => 7,
+				'length' 	 => 5,
 				'align'		 => 'center',
 				'label' 	 => 'Score'
 			),			
@@ -211,13 +211,13 @@
 			),
 			array(
 				'name'       => 'awayteamscore',
-				'length' 	 => 7,
+				'length' 	 => 5,
 				'align'		 => 'center',
 				'label' 	 => 'Score'
 			),			
 			array(
 				'name'       => 'uniqueid',
-				'length' 	 => 12,
+				'length' 	 => 5,
 				'filter'	 => false,
 				'bind' 	 	 => false,
 				'editable' 	 => false,

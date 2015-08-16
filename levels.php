@@ -11,8 +11,18 @@
 			createDocumentLink();
 		}
 		
+		public function postAddScriptEvent() {
+?>
+			$("#editpanel #name").val("<?php echo getLoggedOnClubName(); ?>");
+<?php			
+		}
+		
 		public function postScriptEvent() {
 ?>
+			function age_onchange() {
+				$("#editpanel #name").val("<?php echo getLoggedOnClubName(); ?> U" + $("#age").val());
+			}
+			
 			function login(node) {
 				callAjax(
 						"finddata.php", 
@@ -66,6 +76,10 @@
 	}
 	
 	$crud->dialogwidth = 450;
+	$crud->allowFilter = false;
+	$crud->allowAdd = isUserInRole("SECRETARY");
+	$crud->allowEdit = isUserInRole("SECRETARY");
+	$crud->allowRemove = isUserInRole("SECRETARY");
 	$crud->title = "Teams";
 	$crud->table = "{$_SESSION['DB_PREFIX']}teamagegroup";
 	$crud->columns = array(
@@ -95,7 +109,7 @@
 			array(
 				'name'       => 'age',
 				'type'		 => 'COMBO',
-				'showInView' => false,
+				'onchange'	 => 'age_onchange',
 				'options'    => array(
 						array(
 							'value'		=> '7',
@@ -172,11 +186,6 @@
 		);
 
 	$crud->subapplications = array(
-			array(
-				'title'		  => 'Documents',
-				'imageurl'	  => 'images/document.gif',
-				'script' 	  => 'editDocuments'
-			),
 			array(
 				'title'		  => 'Players',
 				'imageurl'	  => 'images/team.png',
