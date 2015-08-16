@@ -56,6 +56,7 @@
 	$crud = new PlayerCrud();
 	$crud->dialogwidth = 450;
 	$crud->title = "Players";
+	$crud->allowFilter = false;
 	$crud->allowAdd = isUserInRole("TEAM");
 	$crud->allowEdit = isUserInRole("TEAM");
 	$crud->allowRemove = isUserInRole("TEAM");
@@ -119,14 +120,6 @@
 				'name'       => 'registrationnumber',
 				'length' 	 => 30,
 				'label' 	 => 'Registration Number'
-			)
-		);
-
-	$crud->subapplications = array(
-			array(
-				'title'		  => 'Documents',
-				'imageurl'	  => 'images/document.gif',
-				'script' 	  => 'editDocuments'
 			)
 		);
 		

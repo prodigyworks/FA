@@ -77,9 +77,9 @@
 	
 	$crud->dialogwidth = 450;
 	$crud->allowFilter = false;
-	$crud->allowAdd = isUserInRole("SECRETARY");
-	$crud->allowEdit = isUserInRole("SECRETARY");
-	$crud->allowRemove = isUserInRole("SECRETARY");
+	$crud->allowAdd = isUserInRole("SECRETARY") || isUserInRole("ADMIN");
+	$crud->allowEdit = isUserInRole("SECRETARY") || isUserInRole("ADMIN");
+	$crud->allowRemove = isUserInRole("ADMIN");
 	$crud->title = "Teams";
 	$crud->table = "{$_SESSION['DB_PREFIX']}teamagegroup";
 	$crud->columns = array(
@@ -105,6 +105,14 @@
 				'name'       => 'name',
 				'length' 	 => 28,
 				'label' 	 => 'Team'
+			),			
+			array(
+				'name'       => 'teamid',
+				'length' 	 => 28,
+				'default'	 => getLoggedOnClubID(),
+				'label' 	 => 'Team',
+				'showInView' => false,
+				'editable'	 => false
 			),			
 			array(
 				'name'       => 'age',

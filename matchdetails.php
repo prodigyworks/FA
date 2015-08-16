@@ -30,9 +30,8 @@
 	$crud = new MatchCrud();
 	$crud->dialogwidth = 760;
 	$crud->title = "Match Details";
-	$crud->allowAdd = false;
-	$crud->allowEdit = false;
-	$crud->allowRemove = false;
+	$crud->allowFilter = false;
+	$crud->allowView = false;
 	$crud->table = "{$_SESSION['DB_PREFIX']}matchdetails";
 	
 	if (isUserInRole("ADMIN")) {
@@ -244,11 +243,6 @@
 		);
 
 	$crud->subapplications = array(
-			array(
-				'title'		  => 'Documents',
-				'imageurl'	  => 'images/document.gif',
-				'script' 	  => 'editDocuments'
-			),
 			array(
 				'title'		  => 'Match Result Form',
 				'imageurl'	  => 'images/print.png',

@@ -14,7 +14,7 @@
 	}
 	
 	if (isset($_GET['term'])) {
-		$qry .= " HAVING $name like '%" . $_GET['term'] .  "%' ";
+		$qry .= " HAVING $name like '" . $_GET['term'] .  "%' ";
 	}
 	
 	if (isset($_GET['where'])) {
