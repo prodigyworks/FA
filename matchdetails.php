@@ -30,6 +30,9 @@
 	$crud = new MatchCrud();
 	$crud->dialogwidth = 760;
 	$crud->title = "Match Details";
+	$crud->allowAdd = false;
+	$crud->allowEdit = false;
+	$crud->allowRemove = false;
 	$crud->allowFilter = false;
 	$crud->allowView = false;
 	$crud->table = "{$_SESSION['DB_PREFIX']}matchdetails";
@@ -47,9 +50,6 @@
 		
 	} else if (isUserInRole("SECRETARY")) {
 		$clubid = getLoggedOnClubID();
-		$crud->allowAdd = false;
-		$crud->allowEdit = false;
-		$crud->allowRemove = false;
 		$crud->sql = "SELECT A.*, A.id AS uniqueid,
 					  B.name AS refereename, C.age,
 					  C.name AS submittedteamname
@@ -63,9 +63,6 @@
 		
 	} else {
 		$teamid = getLoggedOnTeamID();
-		$crud->allowAdd = false;
-		$crud->allowEdit = false;
-		$crud->allowRemove = false;
 		$crud->sql = "SELECT A.*, A.id AS uniqueid,
 					  B.name AS refereename, C.age,
 					  C.name AS submittedteamname

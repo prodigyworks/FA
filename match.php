@@ -29,6 +29,8 @@
 		<input type="hidden" id="complycodes" name="complycodes" value="<?php if (isset($_POST['complycodes'])) echo $_POST['complycodes']; ?>" />
 		<input type="hidden" id="refereeremarks" name="refereeremarks" value="<?php if (isset($_POST['refereeremarks'])) echo $_POST['refereeremarks']; ?>" />
 		<input type="hidden" id="remarks" name="remarks" value="<?php if (isset($_POST['remarks'])) echo $_POST['remarks']; ?>" />
+		<input type="hidden" id="refereename" name="refereename" value="<?php if (isset($_POST['refereename'])) echo $_POST['refereename']; ?>"/>
+		<input type="hidden" id="refappointedbyleague" name="refappointedbyleague" value="<?php if (isset($_POST['refappointedbyleague'])) echo $_POST['refappointedbyleague']; ?>"/>
 		<input type="hidden" id="refereeid" name="refereeid" value="<?php if (isset($_POST['refereeid'])) echo $_POST['refereeid']; ?>" />
 		<input type="hidden" id="refereeid_lazy" name="refereeid_lazy" value="<?php if (isset($_POST['refereeid_lazy'])) echo $_POST['refereeid_lazy']; ?>" />
 		<input type="hidden" id="name" name="name" value="<?php if (isset($_POST['name'])) echo $_POST['name']; ?>" />

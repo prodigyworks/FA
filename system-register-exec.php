@@ -27,8 +27,7 @@
 	$cemail = clean($_POST['confirmemail']);
 	$teamid = clean($_POST['teamid']);
 	$clubid = clean($_POST['clubid']);
-	
-	$mobile = "";
+	$landline = clean($_POST['telephone']);
 	
 	//Input Validations
 	if($fname == '') {
@@ -98,9 +97,9 @@
 		
 		//Create INSERT query
 		$qry = "INSERT INTO {$_SESSION['DB_PREFIX']}members " .
-				"(firstname, lastname, fullname, login, passwd, email, imageid, accepted, guid, status, clubid, teamid, metacreateddate, metacreateduserid, metamodifieddate, metamodifieduserid) " .
+				"(firstname, lastname, fullname, login, passwd, email, imageid, accepted, guid, status, landline, clubid, teamid, metacreateddate, metacreateduserid, metamodifieddate, metamodifieduserid) " .
 				"VALUES" .
-				"('$fname','$lname', '$fullname', '$login', '".md5($_POST['password'])."', '$email', $imageid, 'Y', '$guid', 'Y', $clubid, $teamid, NOW(), " . getLoggedOnMemberID() . ", NOW(), " .  getLoggedOnMemberID() . ")";
+				"('$fname','$lname', '$fullname', '$login', '".md5($_POST['password'])."', '$email', $imageid, 'Y', '$guid', 'Y', '$landline', $clubid, $teamid, NOW(), " . getLoggedOnMemberID() . ", NOW(), " .  getLoggedOnMemberID() . ")";
 		$result = @mysql_query($qry);
 		$memberid = mysql_insert_id();
 		
@@ -125,10 +124,10 @@
 			$qry = "UPDATE {$_SESSION['DB_PREFIX']}teamagegroup SET 
 					firstname = '$fname', 
 					lastname = '$lname',
+					telephone = '$landline',
 					email = '$email',
 					login = $memberid
-					WHERE id = $teamid 
-					AND (firstname IS NULL OR firstname = '')";
+					WHERE id = $teamid";
 			$result = mysql_query($qry);
 	
 			if (! $result) {
@@ -140,9 +139,9 @@
 			$qry = "UPDATE {$_SESSION['DB_PREFIX']}team SET 
 					firstname = '$fname', 
 					lastname = '$lname',
+					telephone = '$landline',
 					email = '$email'
-					WHERE id = $clubid 
-					AND (firstname IS NULL OR firstname = '')";
+					WHERE id = $clubid";
 			$result = mysql_query($qry);
 	
 			if (! $result) {
@@ -153,7 +152,7 @@
 		mysql_query("COMMIT");
 		
 		sendRoleMessage("ADMIN", "User Registration", "User " . $login . " has been registered as a user.<br>Password : " . $_POST['password']);
-		sendUserMessage($memberid, "User Registration", "<h3>Welcome $fname $lname.</h3><br>You have been invited to become a member of 'iAfrica Database'.<br>Please click on the <a href='" . getSiteConfigData()->domainurl . "/index.php'>link</a> to activate your account.<br><br><h4>Login details</h4>User ID : $login<br>Password : " . $_POST['password']);
+		sendUserMessage($memberid, "User Registration", "<h3>Welcome $fname $lname.</h3><br>You have been invited to become a member of 'Harrow Youth Football League'.<br>Please click on the <a href='" . getSiteConfigData()->domainurl . "/index.php'>link</a> to activate your account.<br><br><h4>Login details</h4>User ID : $login<br>Password : " . $_POST['password']);
 		
 		if($result) {
 			header("location: system-register-success.php");
@@ -168,6 +167,7 @@
 				"SET email = '$email', " .
 				"firstname = '$fname', " .
 				"lastname = '$lname', " .
+				"landline = '$landline', " .
 				"teamid = $teamid, " .
 				"clubd = $clubid, " .
 				"imageid = $imageid, " .

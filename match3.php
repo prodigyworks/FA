@@ -30,6 +30,7 @@
 	$opponentids = (isset($_POST['opponentids']) && $_POST['opponentids'] == "on") ? 1 : 0; 
 	$refappointedbyleague = $_POST['refappointedbyleague']; 
 	$refereeid = $_POST['refereeid']; 
+	$refereename = $_POST['refereename']; 
 	$referee = mysql_escape_string($_POST['refereeid_lazy']); 
 	$division= mysql_escape_string($_POST['division']); 
 	$refereescore = $_POST['refereescore']; 
@@ -56,6 +57,10 @@
 	
 	if ($leaguecup == "") {
 		$leaguecup = "L";
+	}
+	
+	if ($refereeid == 0) {
+		$referee = $refereename;
 	}
 	
 	try {
@@ -175,6 +180,10 @@
 		
     	sendTeamMessage($teamid, "Match Report Confirmed", $details, "", array($file));
     	sendRoleMessage("LEAGUE", "Match Report Confirmed", $details, "", array($file));
+    	
+    	if (isset($_SESSION['SUPER_USER'])) {
+    		sendUserMessage($_SESSION['SUPER_USER'], "Match Report Confirmed", $details, "", array($file));
+        }
     	
     	if ($_POST['refereescore'] <= 60 && $_POST['refereescore'] > 0) {
     		$refname = GetRefereeName($refereeid);

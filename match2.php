@@ -120,16 +120,21 @@
 
 		<table width='75%' cellspacing=5>
 			<tr>
-				<td>Appointed by the League</td>
+				<td>Referee: Appointed by the League? (Yes/No)</td>
 				<td>
 					<SELECT id="refappointedbyleague" name="refappointedbyleague">
 						<OPTION value="Y">Yes</OPTION>
 						<OPTION value="N">No</OPTION>
 					</SELECT>
 				</td>
-				<td>Name of Referee</td>
+				<td>Name</td>
 				<td>
-					<?php createLazyCombo("refereeid", "id", "name", "{$_SESSION['DB_PREFIX']}referee", "", true, 40); ?>
+					<div id="leagueappointedref">
+						<?php createLazyCombo("refereeid", "id", "name", "{$_SESSION['DB_PREFIX']}referee", "", true, 40); ?>
+					</div>
+					<div id="nonleagueappointedref" style="display:none">
+						<input id="refereename" name="refereename" style="width:297px" />
+					</div>
 				</td>
 			</tr>
 			<tr>
@@ -158,6 +163,22 @@
 	<script>
 		$(document).ready(
 				function() {
+					$("#refappointedbyleague").change(
+							function() {
+								if ($(this).val() == "N") {
+									$("#leagueappointedref").hide();
+									$("#nonleagueappointedref").show();
+									$("#refereeid").val("0");
+									$("#refereeid_lazy").val("");
+
+								} else {
+									$("#nonleagueappointedref").hide();
+									$("#leagueappointedref").show();
+									$("#refereename").val("");
+								}
+							}
+						);
+
 <?php 
 					if (isset($_POST['rateplayers'])) echo "$('#rateplayers_" . $_POST['rateplayers'] . "').attr('checked', true);\n";
 					if (isset($_POST['ratechangingrooms'])) echo "$('#ratechangingrooms_" . $_POST['ratechangingrooms'] . "').attr('checked', true);\n";
@@ -173,10 +194,13 @@
 					if (isset($_POST['complycodes'])) echo "$('#complycodes_" . $_POST['complycodes'] . "').attr('checked', true);\n";
 					
 					if (isset($_POST['remarks'])) echo "$('#remarks').val('" . mysql_escape_string($_POST['remarks']) . "');\n";
+					if (isset($_POST['refappointedbyleague'])) echo "$('#refappointedbyleague').val('" . mysql_escape_string($_POST['refappointedbyleague']) . "').trigger('change');\n";
 					if (isset($_POST['refereeid'])) echo "$('#refereeid').val('" . mysql_escape_string($_POST['refereeid']) . "');\n";
 					if (isset($_POST['refereeid_lazy'])) echo "$('#refereeid_lazy').val('" . mysql_escape_string($_POST['refereeid_lazy']) . "');\n";
 					if (isset($_POST['refereescore'])) echo "$('#refereescore').val('" . mysql_escape_string($_POST['refereescore']) . "');\n";
 					if (isset($_POST['refereeremarks'])) echo "$('#refereeremarks').val('" . mysql_escape_string($_POST['refereeremarks']) . "');\n";
+					
+					if (isset($_POST['refereename'])) echo "$('#refereename').val('" . mysql_escape_string($_POST['refereename']) . "');\n";
 					
 					if (isset($_POST['signatureid'])) echo "$('#signatureid').val('" . mysql_escape_string($_POST['signatureid']) . "');\n";
 					if (isset($_POST['name'])) echo "$('#name').val('" . mysql_escape_string($_POST['name']) . "');\n";
@@ -226,7 +250,7 @@
 				return false;
 			}
 			
-			if ($("#refereeid_lazy").val() == "") {
+			if ($("#refereeid_lazy").val() == "" && $("#refereename").val() == "") {
 				pwAlert("Referee must be specified");
 				return false;
 			}

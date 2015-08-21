@@ -23,6 +23,8 @@
 		<input type="hidden" id="awayteamscore" name="awayteamscore" value="<?php echo $_POST['awayteamscore']; ?>" />
 		<input type="hidden" id="refereescore" name="refereescore" value="-1"/>
 		<input type="hidden" id="refereeremarks" name="refereeremarks" value=""/>
+		<input type="hidden" id="refereename" name="refereename" value="<?php if (isset($_POST['refereename'])) echo $_POST['refereename']; ?>"/>
+		<input type="hidden" id="refappointedbyleague" name="refappointedbyleague" value="<?php if (isset($_POST['refappointedbyleague'])) echo $_POST['refappointedbyleague']; ?>"/>
 		<input type="hidden" id="pitchsize" name="pitchsize" value="<?php if (isset($_POST['pitchsize'])) echo $_POST['pitchsize']; ?>" />
 		<input type="hidden" id="complycodes" name="complycodes" value="<?php if (isset($_POST['complycodes'])) echo $_POST['complycodes']; ?>" />
 		<input type="hidden" id="refappointedbyleague" name="refappointedbyleague" value="L"/>

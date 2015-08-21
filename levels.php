@@ -77,8 +77,8 @@
 	
 	$crud->dialogwidth = 450;
 	$crud->allowFilter = false;
-	$crud->allowAdd = isUserInRole("SECRETARY") || isUserInRole("ADMIN");
-	$crud->allowEdit = isUserInRole("SECRETARY") || isUserInRole("ADMIN");
+	$crud->allowAdd = false;
+	$crud->allowEdit = false;
 	$crud->allowRemove = isUserInRole("ADMIN");
 	$crud->title = "Teams";
 	$crud->table = "{$_SESSION['DB_PREFIX']}teamagegroup";

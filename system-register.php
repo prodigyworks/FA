@@ -11,7 +11,7 @@ if( isset($_SESSION['ERRMSG_ARR']) && is_array($_SESSION['ERRMSG_ARR']) && count
 }
 ?>
 <div class="registerPage">
-	<h4>Staff Registry</h4>
+	<h4>Registration</h4>
 	<form id="loginForm" enctype="multipart/form-data" name="loginForm" class="entryform manualform" method="post" action="system-register-exec.php">
 	  <table border="0" align="left">
 	    <tr>
@@ -57,8 +57,12 @@ if( isset($_SESSION['ERRMSG_ARR']) && is_array($_SESSION['ERRMSG_ARR']) && count
 	      </td>
 	    </tr>
 	    <tr>
-	      <td>Login</td>
+	      <td>User Name</td>
 	      <td><input required="true" name="login" type="text" class="textfield logintext" id="login" /></td>
+	    </tr>
+	    <tr>
+	      <td>Telephone</td>
+	      <td><input name="telephone" type="text" class="textfield" id="telephone" /></td>
 	    </tr>
 	    <tr>
 	      <td>Email</td>
