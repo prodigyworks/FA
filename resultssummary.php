@@ -1,8 +1,7 @@
 <?php
 	require_once("system-header.php");
 ?>
-<h2>Results Summary</h2>
-<br>
+<h4>Results Summary</h4>
 <form id="reportform" class="reportform" name="reportform" method="POST" action="resultssummaryreport.php" target="_new">
 	<table>
 		<tr>
@@ -10,7 +9,7 @@
 				Date From
 			</td>
 			<td>
-				<input required="true" class="datepicker"  id="datefrom" name="datefrom" />
+				<input class="datepicker"  id="datefrom" name="datefrom" />
 			</td>
 		</tr>
 		<tr>
@@ -18,7 +17,7 @@
 				Date To
 			</td>
 			<td>
-				<input required="true" class="datepicker"  id="dateto" name="dateto" />
+				<input class="datepicker"  id="dateto" name="dateto" />
 			</td>
 		</tr>
 		<tr>

@@ -7,17 +7,16 @@
 		function AddPage($orientation='', $size='') {
 			parent::AddPage($orientation, $size);
 			
-			$this->Image("images/logomain2.png", 245.6, 1);
-			$this->Image("images/footer.png", 134, 190);
+			$this->Image("images/logomain2.png", 175.6, 1);
 			
 			$size = $this->addText( 10, 13, "Results summary – HYFL", 12, 4, 'B') + 5;
 			$this->SetFont('Arial','', 6);
 				
 			$cols = array( 
-					"Home Team"  => 93,
-					"Score"  => 35,
-					"Away Team"  => 35,
-					" Score "  => 49
+					"Home Team"  => 65,
+					"Score"  => 30,
+					"Away Team"  => 65,
+					" Score "  => 30
 				);
 			
 			$this->addCols($size, $cols);
@@ -32,7 +31,7 @@
 			$this->SetY(30);
 		}
 		
-		function __construct($orientation, $metric, $size, $startdate, $enddate, $userid) {
+		function __construct($orientation, $metric, $size, $startdate, $enddate) {
 			$dynamicY = 0;
 			
 	        parent::__construct($orientation, $metric, $size);
@@ -45,37 +44,83 @@
 				$and = "";
 				
 				if ($startdate != "") {
+					$and = "AND A.matchdate >= '$startdate' ";
 				}
 				
 				if ($enddate != "") {
+					$and = "AND A.matchdate <= '$enddate' ";
 				}
 				
-				if ($userid != "0") {
-					$and .= " AND A.takenbyid = $userid   ";
-				}
-				
-				$sql = "SELECT A.*, 
+				$sql = "SELECT A.*, B.age,
 						DATE_FORMAT(A.matchdate, '%d/%m/%Y') AS matchdate
 						FROM {$_SESSION['DB_PREFIX']}matchdetails A 
-						LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}customer B 
-						ON B.id = A.customerid 
-						LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}members C 
-						ON C.member_id = A.takenbyid 
-						WHERE A.metacreateddate >= '$startdate' 
-						AND A.metacreateddate <= '$enddate 23:59:59' 
+						INNER JOIN {$_SESSION['DB_PREFIX']}teamagegroup B
+						ON B.id = A.hometeamid 
 						WHERE 1 = 1 $and  
-						ORDER BY B.name, A.metacreateddate";
+						ORDER BY A.matchdate, B.age, A.division, A.hometeam";
 				$result = mysql_query($sql);
+				
+				$division = "";
+				$agegroup = "";
+				$matchdate = "";
 				
 				if ($result) {
 					while (($member = mysql_fetch_assoc($result))) {
+						if ($matchdate != $member['matchdate']) {
+							$line=array(
+									"Home Team"  => "Match Date : " . $member['matchdate'],
+									"Score"  => " ",
+									"Away Team"  => " ",
+									" Score "  => " "
+								);
+								
+							$this->addLine( $this->GetY() + 5, $line );
+							
+							$matchdate = $member['matchdate'];
+							$agegroup = "";
+						}
+						
+						if ($agegroup != $member['age']) {
+							$line=array(
+									"Home Team"  => "Age Group : Under " . $member['age'],
+									"Score"  => " ",
+									"Away Team"  => " ",
+									" Score "  => " "
+								);
+								
+							$this->addLine( $this->GetY() + 2, $line );
+							
+							$agegroup = $member['age'];
+							$division = "";
+						}
+						
+						if ($division != $member['division']) {
+							$line=array(
+									"Home Team"  => "Division : " . $member['division'],
+									"Score"  => " ",
+									"Away Team"  => " ",
+									" Score "  => " "
+								);
+								
+							$this->addLine( $this->GetY() + 2, $line );
+							
+							$division = $member['division'];
+							
+							$line=array(
+									"Home Team"  => " ",
+									"Score"  => " ",
+									"Away Team"  => " ",
+									" Score "  => " "
+								);
+								
+							$this->addLine( $this->GetY(), $line );
+						}
+						
 						$line=array(
-								"Customer"  => $member['customername'],
-								"Customer Code"  => $member['accountnumber'],
-								"Quotation Number"  => getSiteConfigData()->bookingprefix . "-" . sprintf("%06d", $member['id']),
-								"User"  => $member['fullname'],
-								"Quotation Date"  => $member['metacreateddate'],
-								"Value"  => number_format($member['total'], 2)
+								"Home Team"  => $member['hometeam'],
+								"Score"  => $member['hometeamscore'],
+								"Away Team"  => $member['opposition'],
+								" Score "  => $member['awayteamscore']
 							);
 							
 						$this->addLine( $this->GetY(), $line );
@@ -93,6 +138,6 @@
 	
 	start_db();
 	
-	$pdf = new MatchResultReport( 'L', 'mm', 'A4', convertStringToDate($_POST['datefrom']), convertStringToDate($_POST['dateto']));
+	$pdf = new MatchResultReport( 'P', 'mm', 'A4', convertStringToDate($_POST['datefrom']), convertStringToDate($_POST['dateto']));
 	$pdf->Output();
 ?>
