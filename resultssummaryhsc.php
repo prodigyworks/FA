@@ -1,8 +1,8 @@
 <?php
 	require_once("system-header.php");
 ?>
-<h4>Results Summary - HYFL</h4>
-<form id="reportform" class="reportform" name="reportform" method="POST" action="resultssummaryreport.php" target="_new">
+<h4>Results Summary - HSC</h4>
+<form id="reportform" class="reportform" name="reportform" method="POST" action="resultssummaryhscreport.php" target="_new">
 	<table>
 		<tr>
 			<td>

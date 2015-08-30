@@ -29,7 +29,7 @@ if( isset($_SESSION['ERRMSG_ARR']) && is_array($_SESSION['ERRMSG_ARR']) && count
 <?php 
 				if (isUserInRole("ADMIN")) {
 ?>
-	      		<OPTION value="ADMIN">Administration</OPTION>
+	      		<OPTION value="ADMIN">League</OPTION>
 	      		<OPTION value="SECRETARY">Secretary</OPTION>
 <?php 
 				}

@@ -7,7 +7,7 @@
 		function newPage() {
 			$this->Image("images/logomain2.png", 235.6, 1);
 			
-			$size = $this->addText( 10, 13, "'No' Answers", 12, 4, 'B') + 5;
+			$size = $this->addText( 10, 13, "'Poor' Responses", 12, 4, 'B') + 5;
 			$this->SetFont('Arial','', 8);
 				
 			$cols = array( 
@@ -15,18 +15,18 @@
 					"Age Group"  => 24,
 					"Division"  => 20,
 					"Reported By"  => 45,
-					"Match ID" => 15,
+					"Match ID"  => 15,
 					"Comments"  => 149
 				);
 			
 			$this->addCols($size, $cols);
 
 			$cols = array(
-					"Match ID" => "L",
 					"Date of Match"  => "L",
 					"Age Group"  => "L",
 					"Division"  => "L",
 					"Reported By"  => "L",
+					"Match ID"  => "L",
 					"Comments"  => "L"
 				);
 			$this->addLineFormat( $cols);
@@ -67,18 +67,18 @@
 						ON B.id = A.refereeid 
 						LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}teamagegroup C 
 						ON C.id = A.teamid 
-						WHERE (A.complycodes = 0 OR A.pitchsize = 0 OR A.requiredbarriers = 0 OR A.opponentids = 0) $and
+						WHERE (A.ratereferee = 'P' OR A.rateplayers = 'P' OR A.ratemanagement = 'P' OR A.ratespectators = 'P' OR A.ratepitchsize = 'P' OR A.ratepitchcondition = 'P' OR A.rategoalsize = 'P' OR A.ratechangingrooms = 'P') $and
 						ORDER BY A.matchdate";
 				$result = mysql_query($sql);
 				
 				if ($result) {
 					while (($member = mysql_fetch_assoc($result))) {
 						$line=array(
-								"Match ID" => $member['id'],
 								"Date of Match"  => $member['matchdate'],
 								"Age Group"  => "Under " . $member['age'],
 								"Division"  => $member['division'],
 								"Reported By"  => $member['teamname'],
+								"Match ID"  => $member['id'],
 								"Comments"  => $member['remarks']
 							);
 							

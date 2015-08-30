@@ -1,5 +1,5 @@
 <?php include("system-header.php"); ?>
-<h4>Referee Comments Made</h4>
+<h4>Comments Made</h4>
 <form method="POST" action="reportcommentsmadelib.php" class="entryform" target="_new">
 	<table cellspacing=10>
 		<tr>

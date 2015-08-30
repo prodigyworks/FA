@@ -8,12 +8,12 @@
 			$this->Image("images/logomain2.png", 165.6, 1);
 			
 			$size = $this->addText( 10, 13, "Referee Average Score Report", 12, 4, 'B') + 5;
-			$this->SetFont('Arial','', 6);
+			$this->SetFont('Arial','', 8);
 				
 			$cols = array( 
-					"Referee"  => 120,
+					"Referee"  => 80,
 					"Games"  => 35,
-					"Average Score"  => 35
+					"Average Score"  => 75
 				);
 			
 			$this->addCols($size, $cols);
@@ -21,7 +21,7 @@
 			$cols = array(
 					"Referee"  => "L",
 					"Games"  => "R",
-					"Average Score"  => "R"
+					"Average Score"  => "L"
 				);
 			$this->addLineFormat( $cols);
 			$this->SetY(30);

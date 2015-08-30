@@ -41,6 +41,7 @@
 	
 	$crud = new RefereeCrud();
 	$crud->dialogwidth = 750;
+	$crud->allowFilter = false;
 	$crud->title = "Referees";
 	$crud->table = "{$_SESSION['DB_PREFIX']}referee";
 	$crud->sql = "SELECT A.* 

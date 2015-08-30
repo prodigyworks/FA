@@ -1,6 +1,6 @@
 <?php include("system-header.php"); ?>
-<h4>Referee Comments Report</h4>
-<form method="POST" action="refereecommentslib.php" class="entryform" target="_new">
+<h4>'Poor' Responses</h4>
+<form method="POST" action="poorresponsesreportlib.php" class="entryform" target="_new">
 	<table cellspacing=10>
 		<tr>
 			<td>

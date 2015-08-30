@@ -20,6 +20,7 @@
 	$crud = new TeamCrud();
 	$crud->dialogwidth = 650;
 	$crud->title = "Clubs";
+	$crud->allowFilter = false;
 	$crud->allowEdit = isUserInRole("ADMIN");
 	$crud->allowRemove = isUserInRole("ADMIN");
 	$crud->allowAdd = isUserInRole("ADMIN");

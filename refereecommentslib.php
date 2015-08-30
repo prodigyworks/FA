@@ -8,16 +8,17 @@
 			$this->Image("images/logomain2.png", 235.6, 1);
 			
 			$size = $this->addText( 10, 13, "Referee Comments Report", 12, 4, 'B') + 5;
-			$this->SetFont('Arial','', 6);
+			$this->SetFont('Arial','', 8);
 				
 			$cols = array( 
 					"Date of Match"  => 24,
 					"Age Group"  => 24,
-					"Division"  => 20,
-					"Reported By"  => 40,
+					"Division"  => 30,
+					"Reported By"  => 45,
+					"Match ID"  => 14,
 					"Referee"  => 40,
-					"Mark"  => 20,
-					"Comments"  => 109
+					"Mark"  => 12,
+					"Comments"  => 87
 				);
 			
 			$this->addCols($size, $cols);
@@ -27,6 +28,7 @@
 					"Age Group"  => "L",
 					"Division"  => "L",
 					"Reported By"  => "L",
+					"Match ID"  => "L",
 					"Referee"  => "L",
 					"Mark"  => "R",
 					"Comments"  => "L"
@@ -69,7 +71,9 @@
 						ON B.id = A.refereeid 
 						LEFT OUTER JOIN {$_SESSION['DB_PREFIX']}teamagegroup C 
 						ON C.id = A.teamid 
-						WHERE refereescore <= 60 $and
+						WHERE refereescore < 61
+						AND C.age > 11
+						$and
 						ORDER BY A.matchdate";
 				$result = mysql_query($sql);
 				
@@ -82,6 +86,7 @@
 								"Reported By"  => $member['teamname'],
 								"Referee"  => $member['refereeename'],
 								"Mark"  => $member['refereescore'],
+								"Match ID"  => $member['id'],
 								"Comments"  => $member['refereeremarks']
 							);
 							
@@ -100,6 +105,6 @@
 	
 	start_db();
 	
-	$pdf = new RefereeReport( 'L', 'mm', 'A4', convertStringToDate($_POST['datefrom']), convertStringToDate($_POST['dateto']));
+	$pdf = new RefereeReport( 'L', 'mm', 'A4', convertStringToDate($_POST['fromdate']), convertStringToDate($_POST['todate']));
 	$pdf->Output();
 ?>

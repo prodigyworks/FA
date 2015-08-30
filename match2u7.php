@@ -23,11 +23,8 @@
 		<input type="hidden" id="awayteamscore" name="awayteamscore" value="<?php echo $_POST['awayteamscore']; ?>" />
 		<input type="hidden" id="refereescore" name="refereescore" value="-1"/>
 		<input type="hidden" id="refereeremarks" name="refereeremarks" value=""/>
-		<input type="hidden" id="refereename" name="refereename" value="<?php if (isset($_POST['refereename'])) echo $_POST['refereename']; ?>"/>
-		<input type="hidden" id="refappointedbyleague" name="refappointedbyleague" value="<?php if (isset($_POST['refappointedbyleague'])) echo $_POST['refappointedbyleague']; ?>"/>
 		<input type="hidden" id="pitchsize" name="pitchsize" value="<?php if (isset($_POST['pitchsize'])) echo $_POST['pitchsize']; ?>" />
 		<input type="hidden" id="complycodes" name="complycodes" value="<?php if (isset($_POST['complycodes'])) echo $_POST['complycodes']; ?>" />
-		<input type="hidden" id="refappointedbyleague" name="refappointedbyleague" value="L"/>
 <?php 
 	$i = 0;
 	
@@ -323,9 +320,21 @@
 
 		<table width='75%' cellspacing=5>
 			<tr>
-				<td>Name of Referee</td>
-				<td colspan=3>
-					<?php createLazyCombo("refereeid", "id", "name", "{$_SESSION['DB_PREFIX']}referee", "", true, 40); ?>
+				<td>Referee: Appointed by the League? (Yes/No)</td>
+				<td>
+					<SELECT id="refappointedbyleague" name="refappointedbyleague">
+						<OPTION value="Y">Yes</OPTION>
+						<OPTION value="N">No</OPTION>
+					</SELECT>
+				</td>
+				<td>Name</td>
+				<td>
+					<div id="leagueappointedref">
+						<?php createLazyCombo("refereeid", "id", "name", "{$_SESSION['DB_PREFIX']}referee", "", true, 40); ?>
+					</div>
+					<div id="nonleagueappointedref" style="display:none">
+						<input id="refereename" name="refereename" style="width:297px" />
+					</div>
 				</td>
 			</tr>
 		</table>
@@ -342,6 +351,21 @@
 	<script>
 		$(document).ready(
 				function() {
+					$("#refappointedbyleague").change(
+							function() {
+								if ($(this).val() == "N") {
+									$("#leagueappointedref").hide();
+									$("#nonleagueappointedref").show();
+									$("#refereeid").val("0");
+									$("#refereeid_lazy").val("");
+
+								} else {
+									$("#nonleagueappointedref").hide();
+									$("#leagueappointedref").show();
+									$("#refereename").val("");
+								}
+							}
+						);
 <?php 
 					if (isset($_POST['ratereferee'])) echo "$('#ratereferee_" . $_POST['ratereferee'] . "').attr('checked', true);\n";
 					if (isset($_POST['rateplayers'])) echo "$('#rateplayers_" . $_POST['rateplayers'] . "').attr('checked', true);\n";
@@ -356,9 +380,12 @@
 					if (isset($_POST['requiredbarriers'])) echo "$('#requiredbarriers_" . $_POST['requiredbarriers'] . "').attr('checked', true);\n";
 					
 					if (isset($_POST['remarks'])) echo "$('#remarks').val('" . mysql_escape_string($_POST['remarks']) . "');\n";
+					if (isset($_POST['refappointedbyleague'])) echo "$('#refappointedbyleague').val('" . mysql_escape_string($_POST['refappointedbyleague']) . "').trigger('change');\n";
 					if (isset($_POST['refereeid'])) echo "$('#refereeid').val('" . mysql_escape_string($_POST['refereeid']) . "');\n";
 					if (isset($_POST['refereeid_lazy'])) echo "$('#refereeid_lazy').val('" . mysql_escape_string($_POST['refereeid_lazy']) . "');\n";
 					
+					if (isset($_POST['refereename'])) echo "$('#refereename').val('" . mysql_escape_string($_POST['refereename']) . "');\n";
+										
 					if (isset($_POST['signatureid'])) echo "$('#signatureid').val('" . mysql_escape_string($_POST['signatureid']) . "');\n";
 					if (isset($_POST['name'])) echo "$('#name').val('" . mysql_escape_string($_POST['name']) . "');\n";
 					if (isset($_POST['output'])) echo "$('#output').val('" . mysql_escape_string($_POST['output']) . "');\n";
@@ -386,7 +413,7 @@
 			);
 		
 		function processorder() {
-			if ($("#refereeid_lazy").val() == "") {
+			if ($("#refereeid_lazy").val() == "" && $("#refereename").val() == "") {
 				pwAlert("Referee must be specified");
 				return false;
 			}

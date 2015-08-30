@@ -9,12 +9,12 @@
 			
 			$this->Image("images/logo_under12.png", 175.6, 1);
 			
-			$size = $this->addText( 10, 13, "Results summary - HYFL", 12, 4, 'B') + 5;
+			$size = $this->addText( 10, 13, "Results summary - HSC", 12, 4, 'B') + 5;
 			$this->SetFont('Arial','', 8);
 				
 			$cols = array( 
 					"Age Group"  => 40,
-					"Division"  => 30,
+					"Group"  => 30,
 					"Home Team"  => 45,
 					"Score"  => 15,
 					"Away Team"  => 45,
@@ -25,7 +25,7 @@
 
 			$cols = array(
 					"Age Group"  => "L",
-					"Division"  => "L",
+					"Group"  => "L",
 					"Home Team"  => "L",
 					"Score"  => "C",
 					"Away Team"  => "L",
@@ -60,7 +60,7 @@
 						FROM {$_SESSION['DB_PREFIX']}matchdetails A 
 						INNER JOIN {$_SESSION['DB_PREFIX']}teamagegroup B
 						ON B.id = A.hometeamid 
-						WHERE B.age >= 12 $and  
+						WHERE B.age < 12 $and  
 						ORDER BY A.matchdate, B.age, A.division, A.hometeam";
 				$result = mysql_query($sql);
 				
@@ -73,7 +73,7 @@
 						if ($matchdate != $member['matchdate']) {
 							$line=array(
                 					"Age Group"  => "Match Date : " . $member['matchdate'],
-                					"Division"  => " ",
+                					"Group"  => " ",
 									"Home Team"  => " ",
 									"Score"  => " ",
 									"Away Team"  => " ",
@@ -83,7 +83,7 @@
 							$this->addLine( $this->GetY() + 5, $line );
 							$line=array(
                 					"Age Group"  => " ",
-                					"Division"  => " ",
+                					"Group"  => " ",
 									"Home Team"  => " ",
 									"Score"  => " ",
 									"Away Team"  => " ",
@@ -163,7 +163,7 @@
 
 						$line=array(
             					"Age Group"  => "Under " . $member['age'],
-            					"Division"  => $pdivision,
+            					"Group"  => $pdivision,
 								"Home Team"  => $member['hometeam'],
 								"Score"  => $member['hometeamscore'],
 								"Away Team"  => $member['opposition'],

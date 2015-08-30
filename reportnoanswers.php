@@ -1,6 +1,6 @@
 <?php include("system-header.php"); ?>
-<h4>Referee Negative Answers</h4>
-<form method="POST" action="reportcommentsmadelib.php" class="entryform" target="_new">
+<h4>'No' Answers</h4>
+<form method="POST" action="reportnoanswerslib.php" class="entryform" target="_new">
 	<table cellspacing=10>
 		<tr>
 			<td>

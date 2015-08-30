@@ -8,14 +8,15 @@
 			$this->Image("images/logomain2.png", 235.6, 1);
 			
 			$size = $this->addText( 10, 13, "Comments Made Report", 12, 4, 'B') + 5;
-			$this->SetFont('Arial','', 6);
+			$this->SetFont('Arial','', 8);
 				
 			$cols = array( 
 					"Date of Match"  => 24,
 					"Age Group"  => 24,
 					"Division"  => 20,
-					"Reported By"  => 40,
-					"Comments"  => 169
+					"Reported By"  => 45,
+					"Match ID"  => 15,
+					"Comments"  => 149
 				);
 			
 			$this->addCols($size, $cols);
@@ -25,6 +26,7 @@
 					"Age Group"  => "L",
 					"Division"  => "L",
 					"Reported By"  => "L",
+					"Match ID"  => "L",
 					"Comments"  => "L"
 				);
 			$this->addLineFormat( $cols);
@@ -76,6 +78,7 @@
 								"Age Group"  => "Under " . $member['age'],
 								"Division"  => $member['division'],
 								"Reported By"  => $member['teamname'],
+								"Match ID"  => $member['id'],
 								"Comments"  => $member['remarks']
 							);
 							
@@ -94,6 +97,6 @@
 	
 	start_db();
 	
-	$pdf = new RefereeReport( 'L', 'mm', 'A4', convertStringToDate($_POST['datefrom']), convertStringToDate($_POST['dateto']));
+	$pdf = new RefereeReport( 'L', 'mm', 'A4', convertStringToDate($_POST['fromdate']), convertStringToDate($_POST['todate']));
 	$pdf->Output();
 ?>
