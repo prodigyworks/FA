@@ -178,7 +178,7 @@
 							}
 							
 						} else {
-							logError($qry . " - " . mysql_error());
+							logError($sql . " - " . mysql_error());
 						}
 
 						$dynamicY = 153 + $this->margin;
@@ -241,10 +241,10 @@
 						$this->addText( 15, $dynamicY, "Referee", 10, 4, 'B');
 						$this->addText( 45, $dynamicY, $this->headermember['referee'], 10, 4, '') + 3;
 					
-						if ($this->headermember['refereescore'] > 0) {
-							$this->addText( 105, $dynamicY, "Appointed by League", 10, 4, 'B');
-							$dynamicY = $this->addText( 145, $dynamicY, ($this->headermember['refappointedbyleague'] == "Y") ? "Yes" : "No", 10, 4, '') + 3;
+						$this->addText( 105, $dynamicY, "Appointed by League", 10, 4, 'B');
+						$dynamicY = $this->addText( 145, $dynamicY, ($this->headermember['refappointedbyleague'] == "Y") ? "Yes" : "No", 10, 4, '') + 3;
 						
+						if ($this->headermember['refereescore'] >= 0) {
 							$this->addText( 15, $dynamicY, "Marks out of 100", 10, 4, 'B');
 							$dynamicY = $this->addText( 45, $dynamicY, $this->headermember['refereescore'], 10, 4, '') + 3;
 							

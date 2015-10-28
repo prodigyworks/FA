@@ -6,6 +6,13 @@
 	#unofficial_referee, .badscore {
 		display:none;
 	}
+	.submissionmsg {
+		display:inline-block;
+		position: relative;
+		top: 7px;
+		left: 20px;
+	}
+	
 </style>
 <div id="orderapp">
 	<div class="title">Match Result Form</div>
@@ -159,6 +166,7 @@
 		
 		<input class="submitbutton" type="button" onclick="prevPage()" value="Prev"></input>&nbsp;
 		<input class="submitbutton" type="button" onclick="processorder()" value="Submit"></input>
+		<div class="submissionmsg"> Please allow the system to complete the submission before clicking any further buttons.</div>
 	</form>
 	<script>
 		$(document).ready(
@@ -240,45 +248,64 @@
 			);
 		
 		function processorder() {
-			if (($("#opponentids_off").is(':checked') || 
-				 $("#complycodes_off").is(':checked') ||
-				 $("#pitchsize_off").is(':checked') ||
-				 $("#requiredbarriers_off").is(':checked')) &&
-				 $("#remarks").val() == "") {
+			$(".submitbutton").attr("disabled", true);
+			
+			setTimeout(
+					function() {
+						if (($("#opponentids_off").is(':checked') || 
+							 $("#complycodes_off").is(':checked') ||
+							 $("#pitchsize_off").is(':checked') ||
+							 $("#requiredbarriers_off").is(':checked')) &&
+							 $("#remarks").val() == "") {
+			
+							pwAlert("If NO to any of the above (or any other observations) please provide comments");
+							$(".submitbutton").attr("disabled", false);
 
-				pwAlert("If NO to any of the above (or any other observations) please provide comments");
-				return false;
-			}
-			
-			if ($("#refereeid_lazy").val() == "" && $("#refereename").val() == "") {
-				pwAlert("Referee must be specified");
-				return false;
-			}
-			
-			if ($("#refereescore").val() == "") {
-				pwAlert("Referee score must be specified");
-				return false;
-			}
-			
-			score = parseFloat($("#refereescore").val());
-			score = parseInt(score);
+							return false;
+						}
+						
+						if (($("#refereeid").val() == "0" || $("#refereeid").val() == "") && $("#refereename").val() == "") {
+							pwAlert("If appointed by the League, the referee must be selected from the drop-down");
+							$(".submitbutton").attr("disabled", false);
 
-			if (score < 0 || score > 100) {
-				pwAlert("Referee score must be between 0 and 100");
-				return false;
-			}
+							return false;
+						}
+						
+						if ($("#refereescore").val() == "") {
+							pwAlert("Referee score must be specified");
+							$(".submitbutton").attr("disabled", false);
 
-			if (score <= 60 && $("#refereeremarks").val() == "") {
-				pwAlert("A club awarding a mark of 60 or less must detail the reason(s) below");
-				return false;
-			}
+							return false;
+						}
+						
+						score = parseFloat($("#refereescore").val());
+						score = parseInt(score);
 			
-			if ($("#name").val() == "") {
-				pwAlert("Signature required");
-				return false;
-			}
+						if (score < 0 || score > 100) {
+							pwAlert("Referee score must be between 0 and 100");
+							$(".submitbutton").attr("disabled", false);
+
+							return false;
+						}
 			
-			$("#orderform").submit();
+						if (score <= 60 && $("#refereeremarks").val() == "") {
+							pwAlert("A club awarding a mark of 60 or less must detail the reason(s) below");
+							$(".submitbutton").attr("disabled", false);
+
+							return false;
+						}
+						
+						if ($("#name").val() == "") {
+							pwAlert("Signature required");
+							$(".submitbutton").attr("disabled", false);
+
+							return false;
+						}
+						
+						$("#orderform").submit();
+					},
+					0
+				);
 		}
 		
 		function prevPage() {

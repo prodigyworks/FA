@@ -29,7 +29,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=8" />
 <link rel="shortcut icon" href="favicon.ico">
 
-<link href="css/style-19052014.css" rel="stylesheet" type="text/css" />
+<link href="css/style-10102015.css" rel="stylesheet" type="text/css" />
 <!-- 
 <link href="css/jquery-ui-1.10.3.custom.css" rel="stylesheet" type="text/css" />
  -->
@@ -107,7 +107,7 @@
 											?>
 									</a>
 									<span>
-									&nbsp;|&nbsp;<a href='system-logout.php'>logout</a>
+									&nbsp;|&nbsp;<a href='system-logout.php?id=<?php echo time(); ?>'>logout</a>
 									</span> 
 									</label>
 								</div>

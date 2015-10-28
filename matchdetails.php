@@ -28,11 +28,11 @@
 	}
 	
 	$crud = new MatchCrud();
-	$crud->dialogwidth = 760;
+	$crud->dialogwidth = 450;
 	$crud->title = "Match Details";
 	$crud->allowAdd = false;
-	$crud->allowEdit = false;
-	$crud->allowRemove = false;
+	$crud->allowEdit = isUserInRole("SUPERUSER");
+	$crud->allowRemove = isUserInRole("SUPERUSER");
 	$crud->allowFilter = false;
 	$crud->allowView = false;
 	$crud->table = "{$_SESSION['DB_PREFIX']}matchdetails";
@@ -79,7 +79,7 @@
 			array(
 				'name'       => 'matchdate',
 				'length' 	 => 12,
-				'datetype'	 => 'date',
+				'datatype'	 => 'date',
 				'label' 	 => 'Match Date'
 			),		
 			array(
@@ -192,6 +192,8 @@
 			array(
 				'name'       => 'hometeam',
 				'length' 	 => 28,
+				'editable'	 => false,
+				'bind'		 => false,
 				'label' 	 => 'Home Team'
 			),
 			array(
@@ -203,6 +205,8 @@
 			array(
 				'name'       => 'opposition',
 				'length' 	 => 28,
+				'editable'	 => false,
+				'bind'		 => false,
 				'label' 	 => 'Away Team'
 			),
 			array(
@@ -212,7 +216,7 @@
 				'label' 	 => 'Score'
 			),			
 			array(
-				'name'       => 'uniqueid',
+				'name'       => 'id',
 				'length' 	 => 5,
 				'filter'	 => false,
 				'bind' 	 	 => false,
@@ -225,17 +229,11 @@
 				'type'       => 'DATACOMBO',
 				'length' 	 => 28,
 				'label' 	 => 'Submitted By Team',
-				'table'		 => 'team',
+				'table'		 => 'teamagegroup',
 				'required'	 => true,
 				'table_id'	 => 'id',
 				'alias'		 => 'submittedteamname',
 				'table_name' => 'name'
-			),
-			array(
-				'name'       => 'remarks',
-				'type'		 => 'BASICTEXTAREA',
-				'showInView' => false,
-				'label' 	 => 'Remarks'
 			)
 		);
 

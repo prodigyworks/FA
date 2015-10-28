@@ -22,13 +22,6 @@
 	if($result) {
 		while (($member = mysql_fetch_assoc($result))) {
 			
-			if ($member['imageid'] != 0) {
-			
-?>
-	<img style='position:absolute;margin-left: 800px; top: 105px; max-height: 120px' src='system-imageviewer.php?id=<?php echo $member['imageid']; ?>' />
-				
-<?php
-			}
 ?>
 	<form id="loginForm" class="manualform" enctype="multipart/form-data" name="loginForm" method="post" action="system-register-exec.php?id=<?php echo $memberid; ?>">
 	  <table border="0" align="left" width='100%'>
@@ -48,8 +41,10 @@
 	      </td>
 	    </tr>
 	    <tr>
-	      <td>Image</td>
-	      <td><input name="image" type="file" class="textfield60" id="image"  value="<?php echo $member['email']; ?>" /></td>
+	      <td>Telephone</td>
+	      <td>
+	      	<input name="telephone" type="text" class="textfield" id="telephone"  value="<?php echo $member['landline']; ?>" />
+	      </td>
 	    </tr>
 	    <tr>
 	    	<td colspan="2">
@@ -60,11 +55,11 @@
 	    </tr>
 	    <tr>
 	      <td>Password</td>
-	      <td><input required="true" name="password" class="pwd" type="password" class="textfield" id="password" /></td>
+	      <td><input name="password" class="pwd" type="password" class="textfield" id="password" /></td>
 	    </tr>
 	    <tr>
 	      <td>Confirm Password </td>
-	      <td><input required="true" name="cpassword" type="password" class="textfield" id="cpassword" /></td>
+	      <td><input name="cpassword" type="password" class="textfield" id="cpassword" /></td>
 	    </tr>
 	    <tr>
 	      <td>&nbsp;</td>
@@ -73,8 +68,6 @@
 	      </td>
 	    </tr>
 	  </table>
-	  <input required="true" type="hidden" id="description" name="description" value="Profile image" />
-	  <input type="hidden" id="description" name="description" value="Profile image" />
 	  <script>
 	  $(document).ready(
 			function() {
@@ -89,7 +82,6 @@
 	}
 ?>	
 				$(".pwd").blur(verifypassword);
-				$("#email").blur(checkEmail);
 				$("#cpassword").blur(verifycpassword);
 				$("#fname").focus();
 			});
@@ -102,10 +94,6 @@
 		}
 		
 		if (! verifycpassword()) {
-			isValid = false;
-		}
-		
-		if (! checkEmail()) {
 			isValid = false;
 		}
 		
@@ -123,10 +111,6 @@
 		var node = $("#cpassword");
 		var str = $(node).val();
 		
-		if ($(node).val() == "") {
-			return false;
-		}
-		
 		if( str == $(".pwd").val()) {
 			$(node).removeClass("invalid");
 			$(node).next().css("visibility", "hidden");
@@ -142,45 +126,8 @@
 			return false;
 		}
 	}
-	
-	
-	function checkEmail() {
-		var node = $("#email");
-		var returnValue = true;
-		
-		if ($(node).val() == "") {
-			return false;
-		}
-		
-		$("#confirmemail").val(node.val());
-		
-		callAjax(
-				"findemail.php", 
-				{ 
-					email: $("#email").val(),
-					login: <?php echo $memberid; ?>
-				},
-				function(data) {
-					if (data.length >= 1) {
-						$(node).addClass("invalid");
-						$(node).next().css("visibility", "visible");
-						$(node).next().attr("title", "Email address is already in use by user " + data[0].login + "(" +  data[0].firstname  + " " + data[o].lastname + ").");
-						
-						returnValue = false;
-						
-					} else {
-						$(node).removeClass("invalid");
-						$(node).next().css("visibility", "hidden");
-						$(node).next().attr("title", "Required field.");
-					}
-				},
-				false
-			);
-			
-		return returnValue;
-	}
 </script>
-	</form>
+</form>
 <?php
 		}
 	}

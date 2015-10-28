@@ -21,11 +21,25 @@
 	?>
 <div id="orderapp">
 <br>
-<h3>
 <center>
+<h3>
 Match card received at <?php echo $createddate; ?>. Reference: <?php echo $id; ?>
-</center>
 </h3>
+<br>
+<br>
+<h4>
+Please click on 'Home' to see your submitted result.
+</h4>
+<br>
+<h4>
+To see the contents of the Match Result Form you have submitted click on the <img src="images/matchconfirmbutton.png" /> button.
+</h4>
+<br>
+<br>
+<h4>
+                          This report can then be printed by your system or saved.
+</h4>
+</center>
 </div>
 <?php
 	require_once("system-footer.php");

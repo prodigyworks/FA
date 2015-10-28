@@ -6,6 +6,12 @@
 	#unofficial_referee, .badscore {
 		display:none;
 	}
+	.submissionmsg {
+		display:inline-block;
+		position: relative;
+		top: 7px;
+		left: 20px;
+	}
 </style>
 <div id="orderapp">
 	<div class="title">Match Result Form</div>
@@ -347,6 +353,7 @@
 		
 		<input class="submitbutton" type="button" onclick="prevPage()" value="Prev"></input>&nbsp;
 		<input class="submitbutton" type="button" onclick="processorder()" value="Submit"></input>
+		<div class="submissionmsg"> Please allow the system to complete the submission before clicking any further buttons.</div>
 	</form>
 	<script>
 		$(document).ready(
@@ -413,17 +420,28 @@
 			);
 		
 		function processorder() {
-			if ($("#refereeid_lazy").val() == "" && $("#refereename").val() == "") {
-				pwAlert("Referee must be specified");
-				return false;
-			}
+			$(".submitbutton").attr("disabled", true);
 			
-			if ($("#name").val() == "") {
-				pwAlert("Signature required");
-				return false;
-			}
-			
-			$("#orderform").submit();
+			setTimeout(
+					function() {
+						if (($("#refereeid").val() == "0" || $("#refereeid").val() == "") && $("#refereename").val() == "") {
+							pwAlert("If appointed by the League, the referee must be selected from the drop-down");
+							$(".submitbutton").attr("disabled", false);
+
+							return false;
+						}
+						
+						if ($("#name").val() == "") {
+							pwAlert("Signature required");
+							$(".submitbutton").attr("disabled", false);
+
+							return false;
+						}
+						
+						$("#orderform").submit();
+					}, 
+					0
+				);
 		}
 		
 		function prevPage() {

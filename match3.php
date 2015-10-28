@@ -4,6 +4,11 @@
 	require_once('matchcardreport.php');
 	
 	start_db();
+	
+	if (! isset($_SESSION) || getLoggedOnMemberID() == 0 || getLoggedOnTeamID() == 0) {
+		header("location: matchtimeout.php");
+		exit();
+	}
 
 	$matchdate = convertStringToDate($_POST['matchdate']); 
 	$leaguecup = $_POST['leaguecup']; 
@@ -30,7 +35,7 @@
 	$opponentids = (isset($_POST['opponentids']) && $_POST['opponentids'] == "on") ? 1 : 0; 
 	$refappointedbyleague = $_POST['refappointedbyleague']; 
 	$refereeid = $_POST['refereeid']; 
-	$refereename = $_POST['refereename']; 
+	$refereename = mysql_escape_string($_POST['refereename']); 
 	$referee = mysql_escape_string($_POST['refereeid_lazy']); 
 	$division= mysql_escape_string($_POST['division']); 
 	$refereescore = $_POST['refereescore']; 
@@ -118,7 +123,7 @@
 			logError($qry . " - " . mysql_error());
 		}
 		
-		
+		$datestamp = date("Y-m-d H:i:s");
 		$qry = "INSERT INTO {$_SESSION['DB_PREFIX']}matchdetails 
 				(
 					matchdate, teamid, imageid, leaguecup, agegroupid, 
@@ -140,7 +145,7 @@
 					$refereescore, '$refereeremarks', '$remarks', '$division',
 					'$ratereferee', '$rateplayers', '$ratemanagement', '$ratespectators',
 					'$ratepitchsize', '$ratepitchcondition', '$rategoalsize', '$ratechangingrooms',
-					$memberid, $memberid, NOW(), NOW()
+					$memberid, $memberid, '$datestamp', '$datestamp'
 				)";
 	
 		$result = mysql_query($qry);
@@ -178,12 +183,12 @@
 		$report = new MatchCardReport( 'P', 'mm', 'A4', $matchid);
 		$report->Output($file, "F");	
 		
-    	sendTeamMessage($teamid, "Match Report Confirmed", $details, "", array($file));
-    	sendRoleMessage("LEAGUE", "Match Report Confirmed", $details, "", array($file));
+//    	sendTeamMessage($teamid, "Match Report Confirmed", $details, "", array($file));
+//    	sendRoleMessage("LEAGUE", "Match Report Confirmed", $details, "", array($file));
     	
-    	if (isset($_SESSION['SUPER_USER'])) {
-    		sendUserMessage($_SESSION['SUPER_USER'], "Match Report Confirmed", $details, "", array($file));
-        }
+//    	if (isset($_SESSION['SUPER_USER'])) {
+//    		sendUserMessage($_SESSION['SUPER_USER'], "Match Report Confirmed", $details, "", array($file));
+//        }
     	
     	if ($_POST['refereescore'] <= 60 && $_POST['refereescore'] > 0) {
     		$refname = GetRefereeName($refereeid);
